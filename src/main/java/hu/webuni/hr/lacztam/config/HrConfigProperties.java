@@ -7,6 +7,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class HrConfigProperties {
 
+	private Salary salary = new Salary();
+
+	public Salary getSalary() {
+		return salary;
+	}
+
+	public void setSalary(Salary salary) {
+		this.salary = salary;
+	}
+	
 	public static class Salary {
 		private Def def = new Def();
 		private Smart smart = new Smart();
@@ -26,16 +36,6 @@ public class HrConfigProperties {
 		public void setSmart(Smart smart) {
 			this.smart = smart;
 		}
-	}
-
-	private Salary salary = new Salary();
-
-	public Salary getSalary() {
-		return salary;
-	}
-
-	public void setSalary(Salary salary) {
-		this.salary = salary;
 	}
 
 	public static class Def {

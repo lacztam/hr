@@ -2,6 +2,7 @@ package hu.webuni.hr.lacztam.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Employee {
 	private Long id;
@@ -76,10 +77,26 @@ public class Employee {
 	public void setBeginningOfEmployment(LocalDateTime beginningOfEmployment) {
 		this.beginningOfEmployment = beginningOfEmployment;
 	}
+	
+	public int getWorkedMonthsSinceStart() {
+		LocalDateTime now = LocalDateTime.now();
+		int currentDay = now.getDayOfMonth();
+		int startDay = beginningOfEmployment.getDayOfMonth();
+
+		long monthsBetweenBeginningOfWorkAndNow = ChronoUnit.MONTHS.between(beginningOfEmployment, now);
+		
+		// because every started month will be a completed worked month
+		// despite the fact, that its not started from the first day of month
+		if(startDay > currentDay)
+			monthsBetweenBeginningOfWorkAndNow  +=1;
+
+		return (int) monthsBetweenBeginningOfWorkAndNow;
+	}
 
 	@Override
 	public String toString() {
 		return "\nEmployee.toString() [\nid=" + id + "\nname=" + name + "\ntitle=" + title + "\nmonthlySalary="
-				+ monthlySalary + "\nbeginningOfEmployment=" + beginningOfEmployment + "\n]";
+				+ monthlySalary + "\nbeginningOfEmployment=" + beginningOfEmployment + 
+				"\ngetWorkedMonthsSinceStart()=" + getWorkedMonthsSinceStart() +"\n]";
 	}
 }

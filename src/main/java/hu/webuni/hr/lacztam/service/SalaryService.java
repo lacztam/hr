@@ -14,14 +14,16 @@ public class SalaryService {
 
 	public void setSalaryService(Employee employee) {
 		int originalSalary = employee.getMonthlySalary();
+		
 		employee.setMonthlySalary(
 				(int) (employee.getMonthlySalary() * (1.0 + employeeService.getPayRaisePercent(employee) / 100.0)));
+		
 		int afterSetMonthlySalary = employee.getMonthlySalary();
 
-		if (originalSalary != afterSetMonthlySalary) {
+		if (originalSalary != afterSetMonthlySalary) 
 			System.out.println("Salary successfully updated.");
-		} else {
+		else 
 			System.out.println("The salary has not changed.");
-		}
+		
 	}
 }
