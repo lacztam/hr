@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <meta charset="ISO-8859-1"> 
+<!--<meta charset="UTF-8"> -->
+<title>HR application</title>
+</head>
+<body>	
+	<h4> Modify employee </h4>
+
+	<form th:action="@{/employees/modify/} + ${targetEmployee.id}" method="POST">
+		Id: <input th:field="${targetEmployee.id}" disabled /> <br>
+		Name: <input th:field="${targetEmployee.name}" /> <br>
+		Title: <input th:field="${targetEmployee.title}" /> <br>
+		Salary: <input th:field="${targetEmployee.monthlySalary}" /> <br>
+		Beginning of employment: <input th:field="${targetEmployee.beginningOfEmployment}" /> <br>
+		<input type="submit" value="Modify" />
+	</form > 
+	<a th:href="@{/employees/}"><button value="Back">Back</button> </a>
+
+</body>
+</html >

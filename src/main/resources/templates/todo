@@ -1,0 +1,1 @@
+2021-12-11 17:37:06.858[0;39m [33m WARN[0;39m [35m19208[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36m.w.s.m.s.DefaultHandlerExceptionResolver[0;39m [2m:[0;39m Resolved [org.springframework.web.HttpMediaTypeNotSupportedException: Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported]

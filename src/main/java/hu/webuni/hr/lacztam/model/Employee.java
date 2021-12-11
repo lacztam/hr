@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public class Employee {
 	private Long id;
 	private String name;
@@ -11,27 +13,25 @@ public class Employee {
 	private int monthlySalary;
 	private LocalDateTime beginningOfEmployment;
 
-	// first constructor will assign the 1901-01-01 date value
-	// for the beginning of employment variable
-	public Employee(Long id, String name, String title, int monthlySalary) {
-		this.id = id;
-		this.name = name;
-		this.title = title;
-		this.monthlySalary = monthlySalary;
-		this.beginningOfEmployment = LocalDateTime.of(1901, 01, 01, 00, 00); // format: yyyy-MM-dd-HH-mm-ss.zzz
-	}
-
-	// in the second constructor, you may set the beginning of employment variable
-	// with the year, month, day arguments
-	public Employee(Long id, String name, String title, int monthlySalary, int year, int month, int day) {
-		this.id = id;
-		this.name = name;
-		this.title = title;
-		this.monthlySalary = monthlySalary;
-		this.beginningOfEmployment = LocalDateTime.of(year, month, day, 00, 00);
-	}
-
 	public Employee() {
+	}
+
+	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+	public Employee(Long id, String name, String title, int monthlySalary, LocalDateTime beginningOfEmployment) {
+		this.id = id;
+		this.name = name;
+		this.title = title;
+		this.monthlySalary = monthlySalary;
+		this.beginningOfEmployment = beginningOfEmployment; 
+	}
+	
+	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+	public Employee(Employee employee) {
+		this.id = employee.getId();
+		this.name = employee.getName();
+		this.title = employee.getTitle();
+		this.monthlySalary = employee.getMonthlySalary();
+		this.beginningOfEmployment = employee.getBeginningOfEmployment(); 
 	}
 
 	public Long getId() {
@@ -98,8 +98,7 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return "\nEmployee.toString() [\nid=" + id + "\nname=" + name + "\ntitle=" + title + "\nmonthlySalary="
-				+ monthlySalary + "\nbeginningOfEmployment=" + beginningOfEmployment + 
-				"\ngetWorkedMonthsSinceStart()=" + getWorkedMonthsSinceStart() +"\n]";
+		return "Employee [id=" + id + ", name=" + name + ", title=" + title + ", monthlySalary=" + monthlySalary
+				+ ", beginningOfEmployment=" + beginningOfEmployment + "]";
 	}
 }

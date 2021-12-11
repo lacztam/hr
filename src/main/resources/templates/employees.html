@@ -1,34 +1,46 @@
 <!DOCTYPE html>
-<htmlxmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>HR application</title>
 </head>
 <body>
+
 	<h1>List of Employees</h1>
-	
-	<ul>
-		<li th:each="employee : ${employees}">
-			<span th:text="${employee.id}">id</span >
-			<span th:text="${employee.name}">name</span >
-			<span th:text="${employee.title}">title</span >
-			<span th:text="${employee.monthlySalary}">monthlySalary</span >
-			<span th:text="${employee.beginningOfEmployment}">beginningOfEmployment</span >
-		</li >
-	</ul>
-	
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Title</th>
+				<th>Salary</th>
+				<th>Start date of employment</th>
+				<th>Delete user </th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="employee : ${employees}">
+				<td th:text="${employee.id}">ID</td >
+				<td><a th:href="@{/employees/modify/} + ${employee.id}"><span th:text="${employee.name}"></span></a></td> 
+				<td th:text="${employee.title}">title</td >
+				<td th:text="${employee.monthlySalary}">monthlySalary</td >
+				<td th:text="${employee.beginningOfEmployment}"><br>beginningOfEmployment</td >
+				<td><a th:href="@{/employees/delete/} + ${employee.id}"><button value=Remove>Remove</button ></a></td>
+			</tr >
+		</tbody>
+	</table>
+		
+	<br><br>	
+
+	<h4> Create new employee </h4>
 	<form th:action="@{/employees}" method="POST" th:object="${newEmployee}">
-		Id: <input th:field="*{id}" /> <br/>
-		Name: <input th:field="*{name}" /> <br/>
-		Title: <input th:field="*{title}" /> <br/>
-		Salary: <input th:field="*{monthlySalary}" /> <br/><br/>
-		Beginning of employment: <br/>
-			Year:<input th:name="year" /> <br/>
-			Month:<input th:name="month" /> <br/>
-			Day:<input th:name="day" /> <br/>
-			
-		<input type="submit" value="Add" />
+		Id: <input th:field="*{id}" /> <br>
+		Name: <input th:field="*{name}" /> <br>
+		Title: <input th:field="*{title}" /> <br>
+		Salary: <input th:field="*{monthlySalary}" /> <br>
+		Beginning of employment: <input th:field="*{beginningOfEmployment}" /> <br>
+		<input type="submit" value="Create new employee" />
 	</form >
-	
+
 </body>
 </html >

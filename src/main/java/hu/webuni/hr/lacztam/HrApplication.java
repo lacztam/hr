@@ -1,5 +1,7 @@
 package hu.webuni.hr.lacztam;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,11 +21,17 @@ public class HrApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Employee e5 = new Employee(5l, "Panna", "Adminisztrátor", 2000 ,2021, 11, 20);
-		Employee e6 = new Employee(6l, "Anna", "PM", 2000, 2020, 10, 12);
-		Employee e7 = new Employee(7l, "Feri", "Logisztikus", 3000, 2018, 7, 12);
-		Employee e8 = new Employee(8l, "Tamás", "Architech", 4000, 2014, 8, 22);
-		Employee e9 = new Employee(9l, "Ági", "Boss", 5000, 2010, 4, 30);
+		LocalDateTime ldt1 = LocalDateTime.of(2021, 11, 20, 0, 0);
+		LocalDateTime ldt2 = LocalDateTime.of(2020, 10, 12, 0, 0);
+		LocalDateTime ldt3 = LocalDateTime.of(2018, 7, 1, 0, 0);
+		LocalDateTime ldt4 = LocalDateTime.of(2014, 8, 22, 0, 0);
+		LocalDateTime ldt5 = LocalDateTime.of(2010, 4, 17, 0, 0);
+
+		Employee e5 = new Employee(1l, "Panna", "Adminisztrátor", 1000 ,ldt1);
+		Employee e6 = new Employee(2l, "Anna", "PM", 2000, ldt2);
+		Employee e7 = new  Employee(3l, "Feri", "Logisztikus", 3000, ldt3);
+		Employee e8 = new Employee(4l, "Tamás", "Architech", 4000, ldt4);
+		Employee e9 = new Employee(5l, "Ági", "Boss", 5000, ldt5);
 		
 		System.out.println(e6.toString());
 		salaryService.setSalaryService(e6);

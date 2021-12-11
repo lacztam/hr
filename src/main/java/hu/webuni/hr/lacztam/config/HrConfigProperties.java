@@ -1,5 +1,7 @@
 package hu.webuni.hr.lacztam.config;
 
+import java.util.TreeMap;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -57,6 +59,15 @@ public class HrConfigProperties {
 		private double limit1;
 		private double limit2;
 		private double limit3;
+		TreeMap<Double, Integer> limits;
+
+		public TreeMap<Double, Integer> getLimits() {
+			return limits;
+		}
+
+		public void setLimits(TreeMap<Double, Integer> limits) {
+			this.limits = limits;
+		}
 
 		public double getPercent1() {
 			return percent1;
