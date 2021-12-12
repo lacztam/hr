@@ -1,11 +1,8 @@
 package hu.webuni.hr.lacztam.web;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,49 +11,36 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import hu.webuni.hr.lacztam.dto.CompanyDto;
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
-import hu.webuni.hr.lacztam.model.Employee;
+import hu.webuni.hr.lacztam.model.DataWrapper;
 
 @RestController
 @RequestMapping("/api/companies")
 public class RestCompanyDtoController {
 
-	Map<Long, CompanyDto> companiesMap = new HashMap<Long, CompanyDto>();
-	{
-		EmployeeDto e1 =  new EmployeeDto(1l, "Panna", "Adminisztrátor", 1000 ,LocalDateTime.of(2010, 7, 30, 12, 14));
-		EmployeeDto e2 =  new EmployeeDto(2l, "Anna", "PM", 2000, LocalDateTime.of(2012, 10, 12, 10, 10));
-		EmployeeDto e3 =  new EmployeeDto(4l, "Tamás", "Architech", 4000, LocalDateTime.of(2014, 8, 22, 15, 15));
-		EmployeeDto e4 =  new EmployeeDto(5l, "Ági", "Boss", 5000, LocalDateTime.of(2010, 4, 30, 5, 30));
-		List<EmployeeDto> employeesList1 = new ArrayList<EmployeeDto>();
-		List<EmployeeDto> employeesList2 = new ArrayList<EmployeeDto>();
-		
-		employeesList1.add(e1);
-		employeesList1.add(e2);
-		
-		employeesList2.add(e3);
-		employeesList2.add(e4);
-		
-		CompanyDto company1 = new CompanyDto(1234,"Company1","Some Street 10", employeesList1);
-		CompanyDto company2 = new CompanyDto(5678,"Company2","That Street 20", employeesList2);
-		
-		companiesMap.put(company1.getCompanyRegistrationNumber(), company1);
-		companiesMap.put(company2.getCompanyRegistrationNumber(), company2);
-	}
-	
+	Map<Long, CompanyDto> companiesMap = new DataWrapper().getCompaniesMap();
 
 	@GetMapping
-	public List<CompanyDto> getAllCompanies(){
-		System.out.println(companiesMap.get(1234L));
+	public List<CompanyDto> getAllCompanies(@RequestParam(required = false) String full){
+		
+//		if(full == null || full == "false" || full = "") {
+//			List<CompanyDto> withoutEmployees = List.copyOf(companiesMap.values());
+//			for(int i=0; i<withoutEmployees.size(); i++) {
+//				withoutEmployees.get(i).setEmployeesList(null);
+//			}
+//			return withoutEmployees;
+//		}
 
 		return new ArrayList<>(companiesMap.values());
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<CompanyDto> getCompany(@PathVariable long id) {
-		CompanyDto companyDto = companiesMap.get(id);
+
+	@GetMapping("/{companyId}")
+	public ResponseEntity<CompanyDto> getCompany(@PathVariable long companyId) {
+		CompanyDto companyDto = companiesMap.get(companyId);
 		if(companyDto != null)
 			return ResponseEntity.ok(companyDto);
 		else
@@ -69,24 +53,58 @@ public class RestCompanyDtoController {
 		return companyDto;
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/{companyId}")
 	public ResponseEntity<CompanyDto> modifyCompany(
-			@PathVariable long id,
+			@PathVariable long companyId,
 			@RequestBody CompanyDto companyDto){
 		
-		if(!companiesMap.containsKey(id)) {
+		if(!companiesMap.containsKey(companyId)) {
 			return ResponseEntity.notFound().build();
 		}
-		companyDto.setCompanyRegistrationNumber(id);
-		companiesMap.put(id, companyDto);
+		companyDto.setCompanyRegistrationNumber(companyId);
+		companiesMap.put(companyId, companyDto);
 		
 		return ResponseEntity.ok(companyDto);
 	}
 	
-	@DeleteMapping("/{id}")
-	public void deleteCompany(@PathVariable long id) {
-		companiesMap.remove(id);
+	@DeleteMapping("/{companyId}")
+	public void deleteCompany(@PathVariable long companyId) {
+		companiesMap.remove(companyId);
 	}
 	
+	@PostMapping("/{companyId}/addEmployee")
+	public CompanyDto addEmployeeToCompany(
+					@PathVariable long companyId,
+					@RequestBody EmployeeDto employeeDto) {
+			CompanyDto companyDto = companiesMap.get(companyId);
+			companyDto.getEmployeesList().add(employeeDto);
+			
+		return companyDto;
+	}
 	
+	@DeleteMapping("/{companyId}/deleteEmployee/{employeeId}")
+	public void deleteEmployeeFromCompany(
+			@PathVariable long companyId,
+			@PathVariable long employeeId) {
+		CompanyDto companyDto = companiesMap.get(companyId);
+		
+		EmployeeDto removeEmployee = 
+				companyDto.getEmployeesList().stream().filter(employee -> employee.getId() == employeeId).findAny().orElse(null);
+		
+		companyDto.getEmployeesList().remove(removeEmployee);
+	}
+	
+	@PostMapping("/{companyId}/changeEmployeeList")
+	public CompanyDto changeEmployeeList(@PathVariable long companyId,
+										@RequestBody List<EmployeeDto> employeeList) {
+		
+		CompanyDto companyDto = companiesMap.get(companyId);
+		companyDto.getEmployeesList().clear();
+		companyDto.setEmployeesList(employeeList);
+		
+		return companyDto;
+	}
+
+
+
 }

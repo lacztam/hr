@@ -1,7 +1,6 @@
 package hu.webuni.hr.lacztam.config;
 
 import java.util.TreeMap;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 

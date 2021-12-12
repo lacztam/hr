@@ -3,7 +3,6 @@ package hu.webuni.hr.lacztam.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class Employee {

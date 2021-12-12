@@ -1,9 +1,6 @@
 package hu.webuni.hr.lacztam.dto;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -22,6 +19,10 @@ public class EmployeeDto {
 		this.title = title;
 		this.monthlySalary = monthlySalary;
 		this.beginningOfEmployment = beginningOfEmployment;
+	}
+	
+	public EmployeeDto() {
+		
 	}
 
 	public Long getId() {

@@ -2,14 +2,13 @@ package hu.webuni.hr.lacztam.service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import hu.webuni.hr.lacztam.config.HrConfigProperties;
 import hu.webuni.hr.lacztam.config.HrConfigProperties.Smart;
-import hu.webuni.hr.lacztam.model.Employee;
-
+import hu.webuni.hr.lacztam.dto.EmployeeDto;
 
 @Service
 public class SmartEmployeeService implements EmployeeService {
@@ -18,7 +17,7 @@ public class SmartEmployeeService implements EmployeeService {
 	HrConfigProperties config;
 
 	@Override
-	public int getPayRaisePercent(Employee employee) {
+	public int getPayRaisePercent(EmployeeDto employee) {
 
 		double yearsWorked = ChronoUnit.DAYS.between(employee.getBeginningOfEmployment(), LocalDateTime.now()) / 365.0;
 		Smart smartConfig = config.getSalary().getSmart();

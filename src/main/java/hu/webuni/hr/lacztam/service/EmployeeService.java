@@ -1,7 +1,7 @@
 package hu.webuni.hr.lacztam.service;
 
-import hu.webuni.hr.lacztam.model.Employee;
+import hu.webuni.hr.lacztam.dto.EmployeeDto;
 
 public interface EmployeeService {
-	public int getPayRaisePercent(Employee employee);
+	public int getPayRaisePercent(EmployeeDto employeeDto);
 }

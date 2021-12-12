@@ -1,7 +1,7 @@
 package hu.webuni.hr.lacztam.service;
 
 import org.springframework.stereotype.Service;
-import hu.webuni.hr.lacztam.model.Employee;
+import hu.webuni.hr.lacztam.dto.EmployeeDto;
 
 @Service
 public class SalaryService {
@@ -12,7 +12,7 @@ public class SalaryService {
 		this.employeeService = employeeService;
 	}
 
-	public void setSalaryService(Employee employee) {
+	public void setSalaryService(EmployeeDto employee) {
 		int originalSalary = employee.getMonthlySalary();
 		
 		employee.setMonthlySalary(
