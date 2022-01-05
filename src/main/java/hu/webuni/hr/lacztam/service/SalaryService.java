@@ -6,17 +6,17 @@ import hu.webuni.hr.lacztam.dto.EmployeeDto;
 @Service
 public class SalaryService {
 
-	EmployeeService employeeService;
+	EmployeePayService employeePayService;
 
-	public SalaryService(EmployeeService employeeService) {
-		this.employeeService = employeeService;
+	public SalaryService(EmployeePayService employeePayService) {
+		this.employeePayService = employeePayService;
 	}
 
 	public void setSalaryService(EmployeeDto employee) {
 		int originalSalary = employee.getMonthlySalary();
 		
 		employee.setMonthlySalary(
-				(int) (employee.getMonthlySalary() * (1.0 + employeeService.getPayRaisePercent(employee) / 100.0)));
+				(int) (employee.getMonthlySalary() * (1.0 + employeePayService.getPayRaisePercent(employee) / 100.0)));
 		
 		int afterSetMonthlySalary = employee.getMonthlySalary();
 

@@ -3,7 +3,9 @@ package hu.webuni.hr.lacztam.dto;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import hu.webuni.hr.lacztam.service.constraint.ValidEmployeeDto;
 
+@ValidEmployeeDto
 public class EmployeeDto {
 	private Long id;
 	private String name;
@@ -22,29 +24,25 @@ public class EmployeeDto {
 	}
 	
 	public EmployeeDto() {
-		
 	}
 
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -52,7 +50,6 @@ public class EmployeeDto {
 	public int getMonthlySalary() {
 		return monthlySalary;
 	}
-
 	public void setMonthlySalary(int monthlySalary) {
 		this.monthlySalary = monthlySalary;
 	}
@@ -60,7 +57,6 @@ public class EmployeeDto {
 	public LocalDateTime getBeginningOfEmployment() {
 		return beginningOfEmployment;
 	}
-
 	public void setBeginningOfEmployment(LocalDateTime beginningOfEmployment) {
 		this.beginningOfEmployment = beginningOfEmployment;
 	}

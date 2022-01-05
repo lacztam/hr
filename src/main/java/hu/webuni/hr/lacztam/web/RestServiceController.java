@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
 import hu.webuni.hr.lacztam.model.DataWrapper;
+import hu.webuni.hr.lacztam.service.EmployeePayService;
 import hu.webuni.hr.lacztam.service.EmployeeService;
 
 @RestController
@@ -22,11 +23,11 @@ public class RestServiceController {
 	Map<Long, EmployeeDto> employeesMap = new DataWrapper().getEmployeesMap();
 
 	@Autowired
-	EmployeeService employeeService;
+	EmployeePayService employeePayService;
 	
 	@GetMapping
 	public int getDiscountPercent(@RequestBody EmployeeDto employeeDto) {
-		return employeeService.getPayRaisePercent(employeeDto);
+		return employeePayService.getPayRaisePercent(employeeDto);
 	}
 	
 	@GetMapping("/{employeeId}")

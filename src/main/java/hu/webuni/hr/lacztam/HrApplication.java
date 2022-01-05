@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
 import hu.webuni.hr.lacztam.model.DataWrapper;
+import hu.webuni.hr.lacztam.service.EmployeePayService;
 import hu.webuni.hr.lacztam.service.EmployeeService;
 import hu.webuni.hr.lacztam.service.SalaryService;
 
@@ -17,7 +18,7 @@ public class HrApplication implements CommandLineRunner {
 	SalaryService salaryService;
 	
 	@Autowired
-	EmployeeService employeeService;
+	EmployeePayService employeePayService;
 		
 	Map<Long, EmployeeDto> employeesMap = new DataWrapper().getEmployeesMap();
 	
@@ -53,7 +54,7 @@ public class HrApplication implements CommandLineRunner {
 		System.out.println(e5.toString());
 		salaryService.setSalaryService(e5);
 		System.out.println("Current salary: " + e5.getMonthlySalary());
-		System.out.println("getPayRaisePercent(e9):" + employeeService.getPayRaisePercent(e5));
+		System.out.println("getPayRaisePercent(e9):" + employeePayService.getPayRaisePercent(e5));
 		
 		System.out.println("employeeDto.getName()" + employeesMap.get(1L).getName());		
 	}

@@ -11,7 +11,7 @@ import hu.webuni.hr.lacztam.config.HrConfigProperties.Smart;
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
 
 @Service
-public class SmartEmployeeService implements EmployeeService {
+public class SmartEmployeeService extends EmployeePayService {
 
 	@Autowired
 	HrConfigProperties config;

@@ -6,7 +6,7 @@ import hu.webuni.hr.lacztam.config.HrConfigProperties;
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
 
 @Service
-public class DefaultEmployeeService implements EmployeeService {
+public class DefaultEmployeeService extends EmployeePayService{
 
 	@Autowired
 	HrConfigProperties config;

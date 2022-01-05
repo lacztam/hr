@@ -37,7 +37,6 @@ public class RestCompanyDtoController {
 		return new ArrayList<>(companiesMap.values());
 	}
 	
-
 	@GetMapping("/{companyId}")
 	public ResponseEntity<CompanyDto> getCompany(@PathVariable long companyId) {
 		CompanyDto companyDto = companiesMap.get(companyId);
@@ -104,7 +103,4 @@ public class RestCompanyDtoController {
 		
 		return companyDto;
 	}
-
-
-
 }
