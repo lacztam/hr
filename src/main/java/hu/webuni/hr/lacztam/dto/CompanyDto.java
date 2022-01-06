@@ -1,10 +1,14 @@
 package hu.webuni.hr.lacztam.dto;
 
 import java.util.List;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class CompanyDto {
-
+	
+	@NotNull
 	private long companyRegistrationNumber;
+	@NotEmpty
 	private String name;
 	private String address;
 	private List<EmployeeDto> employeesList;

@@ -2,17 +2,16 @@ package hu.webuni.hr.lacztam.web;
 
 import java.util.ArrayList;
 import java.util.Map;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
+import hu.webuni.hr.lacztam.mapper.EmployeeMapper;
+import hu.webuni.hr.lacztam.model.Employee;
 import hu.webuni.hr.lacztam.service.EmployeeService;
 
 @Controller
@@ -21,6 +20,9 @@ public class EmployeeController {
 
 	@Autowired
 	EmployeeService employeeService;
+	
+	@Autowired
+	EmployeeMapper employeeMapper;
 	
 	@GetMapping
 	public String getAllEmployees(Map<String, Object> model) {
@@ -32,9 +34,7 @@ public class EmployeeController {
 	
 	@PostMapping
 	public String addEmployee(@Valid EmployeeDto employeeDto){
-		Map<Long, EmployeeDto> employeesMap = employeeService.getEmployeesMap();
-		employeesMap.put(employeeDto.getId(), employeeDto);
-		employeeService.setEmployeesMap(employeesMap);
+		employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
 		
 		return "redirect:employees";
 	}
@@ -44,19 +44,18 @@ public class EmployeeController {
 			@PathVariable long id,
 			Map<String, Object> model) {
 
-		EmployeeDto EmployeeDto = employeeService.getEmployeesMap().get(id);
-		model.put("targetEmployee", EmployeeDto);
+		EmployeeDto employee = employeeMapper.employeeToDto(employeeService.getEmployeesMap().get(id));
+		model.put("targetEmployee", employee);
 		
 		return "modify_employee";
 	}
 	
 	@PostMapping("/modify/{id}")
-	public String modifyEmployee(EmployeeDto targetEmployee, @PathVariable long id){
+	public String modifyEmployee(EmployeeDto employeeDto, @PathVariable long id){
 		
-		if(targetEmployee != null) {
-			targetEmployee.setId(id);
-			Map<Long, EmployeeDto> employeesMap = employeeService.getEmployeesMap();
-			employeesMap.put(targetEmployee.getId(), targetEmployee);
+		if(employeeDto != null) {
+			employeeDto.setId(id);
+			employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
 		}
 				
 		return "redirect:../";	

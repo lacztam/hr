@@ -1,19 +1,18 @@
 package hu.webuni.hr.lacztam.model;
 
 import java.util.List;
-import hu.webuni.hr.lacztam.dto.EmployeeDto;
 
 public class Company {
 
 	private long companyRegistrationNumber;
 	private String name;
 	private String address;
-	private List<EmployeeDto> employeesList;
+	private List<Employee> employeesList;
 	
 	public Company() {
 	}
 	
-	public Company(long companyRegistrationNumber, String name, String address, List<EmployeeDto> employeesList) {
+	public Company(long companyRegistrationNumber, String name, String address, List<Employee> employeesList) {
 		this.companyRegistrationNumber = companyRegistrationNumber;
 		this.name = name;
 		this.address = address;
@@ -44,20 +43,17 @@ public class Company {
 		this.address = address;
 	}
 
-	public List<EmployeeDto> getEmployeesList() {
+	public List<Employee> getEmployeesList() {
 		return employeesList;
 	}
 
-	public void setEmployeesList(List<EmployeeDto> employeesList) {
+	public void setEmployeesList(List<Employee> employeesList) {
 		this.employeesList = employeesList;
 	}
 
 	@Override
 	public String toString() {
-		return "Company.toString():\n [companyRegistrationNumber=" + companyRegistrationNumber + ", name=" + name + ", address="
-				+ address + ", employeesList=" + employeesList + ", getCompanyRegistrationNumber()="
-				+ getCompanyRegistrationNumber() + ", getName()=" + getName() + ", getAddress()=" + getAddress()
-				+ ", getEmployeesList()=" + getEmployeesList() + ", getClass()=" + getClass() + ", hashCode()="
-				+ hashCode() + ", toString()=" + super.toString() + "]";
-	}	
+		return "Company [companyRegistrationNumber=" + companyRegistrationNumber + ", name=" + name + ", address="
+				+ address + ", employeesList=" + employeesList + "]";
+	}
 }

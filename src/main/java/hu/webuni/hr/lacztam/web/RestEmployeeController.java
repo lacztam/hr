@@ -1,8 +1,6 @@
 package hu.webuni.hr.lacztam.web;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
-import hu.webuni.hr.lacztam.model.DataWrapper;
+import hu.webuni.hr.lacztam.mapper.EmployeeMapper;
+import hu.webuni.hr.lacztam.model.Employee;
+import hu.webuni.hr.lacztam.service.EmployeeService;
 import hu.webuni.hr.lacztam.service.validator.EmployeeDtoValidator;
 
 @RestController
@@ -29,57 +30,61 @@ public class RestEmployeeController {
 	@Autowired
 	EmployeeDtoValidator validator;
 	
-	Map<Long, EmployeeDto> employeesMap = new DataWrapper().getEmployeesMap();
+	@Autowired
+	EmployeeService employeeService;
+	
+	@Autowired
+	EmployeeMapper employeeMapper;
 	
 	@GetMapping
 	public List<EmployeeDto> getAll(){
-		return new ArrayList<>(employeesMap.values());
+		return employeeMapper.employeesToDtos(employeeService.findAll());
 	}
 	
 	@GetMapping(params = "minSalary")
 	public List<EmployeeDto> findBySalary(@RequestParam int minSalary){
-		return employeesMap.values().stream()
+		return employeeMapper.employeesToDtos(employeeService.getEmployeesMap().values().stream()
 				.filter(e -> e.getMonthlySalary() > minSalary)
-				.collect(Collectors.toList());
+				.collect(Collectors.toList()));
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<EmployeeDto>  getById(@PathVariable long id) {
-		EmployeeDto employeeDto = employeesMap.get(id);
-		if(employeeDto != null)
-			return ResponseEntity.ok(employeeDto);
+	public EmployeeDto getById(@PathVariable long id) {
+		Employee employee = employeeService.findById(id);
+		
+		if(employee != null)
+			return employeeMapper.employeeToDto(employee);
 		else
-			return ResponseEntity.notFound().build();
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
 	
 	@PostMapping
 	public EmployeeDto createNewEmployeeDto(@Valid @RequestBody EmployeeDto employeeDto, BindingResult result) {
-		System.out.println("createNewEmployeeDto() method called.");
-		System.out.println("employeeDto.toString():" + employeeDto.toString());
+		Employee employee = employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
 		
-//		A programatic validáció is jól működik		
+//		Ez is jó!
 //		validator.validate(employeeDto, result);
 		
 		if(result.hasErrors()) {
 			throw new IllegalArgumentException(result.getAllErrors().toString());
 		}
 		
-		employeesMap.put(employeeDto.getId(), employeeDto);
-		return employeeDto;
+		return employeeMapper.employeeToDto(employee);
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id, @Valid @RequestBody EmployeeDto employeeDto) {
-		if(!employeesMap.containsKey(id)) {
+		
+		if(!employeeService.getEmployeesMap().containsKey(id)) {
 			return ResponseEntity.notFound().build();
 		}
 		employeeDto.setId(id);
-		employeesMap.put(id, employeeDto);
+		employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
 		return ResponseEntity.ok(employeeDto);
 	}
 	
 	@DeleteMapping("/{id}")
 	public void deleteEmployee(@PathVariable long id) {
-		employeesMap.remove(id);
+		employeeService.delete(id);
 	}
 }

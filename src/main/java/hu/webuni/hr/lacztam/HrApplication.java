@@ -1,12 +1,11 @@
 package hu.webuni.hr.lacztam;
 
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
-import hu.webuni.hr.lacztam.model.DataWrapper;
+import hu.webuni.hr.lacztam.mapper.EmployeeMapper;
 import hu.webuni.hr.lacztam.service.EmployeePayService;
 import hu.webuni.hr.lacztam.service.EmployeeService;
 import hu.webuni.hr.lacztam.service.SalaryService;
@@ -20,7 +19,11 @@ public class HrApplication implements CommandLineRunner {
 	@Autowired
 	EmployeePayService employeePayService;
 		
-	Map<Long, EmployeeDto> employeesMap = new DataWrapper().getEmployeesMap();
+	@Autowired
+	EmployeeService employeeService;
+	
+	@Autowired
+	EmployeeMapper employeeMapper;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(HrApplication.class, args);
@@ -29,11 +32,11 @@ public class HrApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		EmployeeDto e1 = employeesMap.get(1L);
-		EmployeeDto e2 = employeesMap.get(2L);
-		EmployeeDto e3 = employeesMap.get(3L);
-		EmployeeDto e4 = employeesMap.get(4L);
-		EmployeeDto e5 = employeesMap.get(5L);
+		EmployeeDto e1 = employeeMapper.employeeToDto(employeeService.getEmployeesMap().get(1L));
+		EmployeeDto e2 = employeeMapper.employeeToDto(employeeService.getEmployeesMap().get(2L));
+		EmployeeDto e3 = employeeMapper.employeeToDto(employeeService.getEmployeesMap().get(3L));
+		EmployeeDto e4 = employeeMapper.employeeToDto(employeeService.getEmployeesMap().get(4L));
+		EmployeeDto e5 = employeeMapper.employeeToDto(employeeService.getEmployeesMap().get(5L));
 		
 		System.out.println(e1);
 		salaryService.setSalaryService(e1);
@@ -56,6 +59,6 @@ public class HrApplication implements CommandLineRunner {
 		System.out.println("Current salary: " + e5.getMonthlySalary());
 		System.out.println("getPayRaisePercent(e9):" + employeePayService.getPayRaisePercent(e5));
 		
-		System.out.println("employeeDto.getName()" + employeesMap.get(1L).getName());		
+		System.out.println("employeeDto.getName()" + employeeService.getEmployeesMap().get(1L).getName());		
 	}
 }
