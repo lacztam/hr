@@ -58,11 +58,12 @@ public class RestCompanyDtoController {
 	
 	@PostMapping
 	public CompanyDto createNewCompany(@Valid @RequestBody CompanyDto companyDto, BindingResult result) {
-		Company company = companyService.save(companyMapper.dtoToCompany(companyDto));
 		
 		if(result.hasErrors()) {
 			throw new IllegalArgumentException(result.getAllErrors().toString());
 		}
+		
+		Company company = companyService.save(companyMapper.dtoToCompany(companyDto));
 		
 		return companyMapper.companytoDto(company);
 	}

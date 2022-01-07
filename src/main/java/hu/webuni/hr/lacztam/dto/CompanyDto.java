@@ -6,9 +6,7 @@ import javax.validation.constraints.NotNull;
 
 public class CompanyDto {
 	
-	@NotNull
 	private long companyRegistrationNumber;
-	@NotEmpty
 	private String name;
 	private String address;
 	private List<EmployeeDto> employeesList;
