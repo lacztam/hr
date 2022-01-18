@@ -5,6 +5,14 @@ spring:
   mvc:
     format:
       date-time: yyyy-MM-dd HH:mm:ss
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hr
+    username: postgres
+    password: pgpw
+  jpa:
+    show-sql: true
+#    hibernate:#      ddl-auto: create
       
 hr: 
   salary: 

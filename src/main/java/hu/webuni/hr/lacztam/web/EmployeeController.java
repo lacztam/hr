@@ -2,6 +2,8 @@ package hu.webuni.hr.lacztam.web;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
+
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,21 +14,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
 import hu.webuni.hr.lacztam.mapper.EmployeeMapper;
 import hu.webuni.hr.lacztam.model.Employee;
+import hu.webuni.hr.lacztam.repository.EmployeeRepository;
 import hu.webuni.hr.lacztam.service.EmployeeService;
 
 @Controller
 @RequestMapping("/employees")
 public class EmployeeController {
-
-	@Autowired
-	EmployeeService employeeService;
 	
 	@Autowired
 	EmployeeMapper employeeMapper;
 	
+	@Autowired
+	EmployeeRepository employeeRepository;
+	
 	@GetMapping
 	public String getAllEmployees(Map<String, Object> model) {
-		model.put("employees", new ArrayList<>(employeeService.getEmployeesMap().values()) );
+		model.put("employees", employeeRepository.findAll());
 		model.put("newEmployee", new EmployeeDto());
 		
 		return "employees";
@@ -34,8 +37,7 @@ public class EmployeeController {
 	
 	@PostMapping
 	public String addEmployee(@Valid EmployeeDto employeeDto){
-		employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
-		
+		employeeRepository.save(employeeMapper.dtoToEmployee(employeeDto));
 		return "redirect:employees";
 	}
 	
@@ -44,18 +46,18 @@ public class EmployeeController {
 			@PathVariable long id,
 			Map<String, Object> model) {
 
-		EmployeeDto employee = employeeMapper.employeeToDto(employeeService.getEmployeesMap().get(id));
+		Employee employee = employeeRepository.findById(id).orElseThrow();
 		model.put("targetEmployee", employee);
 		
 		return "modify_employee";
 	}
 	
 	@PostMapping("/modify/{id}")
-	public String modifyEmployee(EmployeeDto employeeDto, @PathVariable long id){
+	public String modifyEmployee(@PathVariable long id, EmployeeDto employeeDto){
 		
 		if(employeeDto != null) {
 			employeeDto.setId(id);
-			employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
+			employeeRepository.save(employeeMapper.dtoToEmployee(employeeDto));
 		}
 				
 		return "redirect:../";	
@@ -63,7 +65,8 @@ public class EmployeeController {
 	
 	@GetMapping("/delete/{id}")
 	public String deleteEmployee(@PathVariable long id) {
-		employeeService.getEmployeesMap().remove(employeeService.getEmployeesMap().get(id).getId());
+		Employee employee = employeeRepository.findById(id).orElseThrow();
+		employeeRepository.delete(employee);
 		
 		return "redirect:../";
 	}

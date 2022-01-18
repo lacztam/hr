@@ -1,69 +1,109 @@
 package hu.webuni.hr.lacztam.dto;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Positive;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import hu.webuni.hr.lacztam.service.constraint.ValidEmployeeDto;
 
-@ValidEmployeeDto
+
 public class EmployeeDto {
-	private Long id;
+	private long id;
+	@NotEmpty
 	private String name;
+	@NotEmpty
 	private String title;
-	private int monthlySalary;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime beginningOfEmployment;
+	@Positive
+	private int salary;
+	@Past
+	private LocalDateTime entryDate;
 	
+	private CompanyDto companyDto;
+
+	public EmployeeDto() {
+
+	}
+
 	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-	public EmployeeDto(Long id, String name, String title, int monthlySalary, LocalDateTime beginningOfEmployment) {
+	public EmployeeDto(long id, 
+			String name, 
+			String title, 
+			int salary, 
+			LocalDateTime entryDate) {
 		this.id = id;
 		this.name = name;
 		this.title = title;
-		this.monthlySalary = monthlySalary;
-		this.beginningOfEmployment = beginningOfEmployment;
+		this.salary = salary;
+		this.entryDate = entryDate;
 	}
 	
-	public EmployeeDto() {
-	}
+//	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+//	public EmployeeDto(long id, 
+//			String name, 
+//			String title, 
+//			int salary/*, LocalDateTime entryDate*/, 
+//			int year, 
+//			int month, 
+//			int day) {
+//		this.id = id;
+//		this.name = name;
+//		this.title = title;
+//		this.salary = salary;
+////		this.entryDate = entryDate;
+//		this.entryDate = LocalDateTime.of(year, month, day, 0, 0);
+//	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(Long id) {
+
+	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	public int getMonthlySalary() {
-		return monthlySalary;
-	}
-	public void setMonthlySalary(int monthlySalary) {
-		this.monthlySalary = monthlySalary;
+	public int getSalary() {
+		return salary;
 	}
 
-	public LocalDateTime getBeginningOfEmployment() {
-		return beginningOfEmployment;
+	public void setSalary(int salary) {
+		this.salary = salary;
 	}
-	public void setBeginningOfEmployment(LocalDateTime beginningOfEmployment) {
-		this.beginningOfEmployment = beginningOfEmployment;
+
+	public LocalDateTime getEntryDate() {
+		return entryDate;
+	}
+
+	public void setEntryDate(LocalDateTime entryDate) {
+		this.entryDate = entryDate;
 	}
 
 	@Override
 	public String toString() {
-		return "EmployeeDto [id=" + id + ", name=" + name + ", title=" + title + ", monthlySalary=" + monthlySalary
-				+ ", beginningOfEmployment=" + beginningOfEmployment + "]";
+		return "Employee [id=" + id + ", name=" + name + ", title=" + title + ", salary=" + salary + ", entryDate="
+				+ entryDate + "]";
+	}
+
+	public CompanyDto getCompany() {
+		return companyDto;
+	}
+
+	public void setCompany(CompanyDto companyDto) {
+		this.companyDto = companyDto;
 	}
 }

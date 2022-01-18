@@ -26,12 +26,12 @@ public class ValidEmployeeDtoValidator
 		if(employeeDto.getTitle() == null || employeeDto.getTitle() == "")
 			throw new IllegalArgumentException("EmployeeDto title value is null or empty.");
 		
-		if(now.isBefore(employeeDto.getBeginningOfEmployment()))
+		if(now.isBefore(employeeDto.getEntryDate()))
 			throw new IllegalArgumentException("EmployeeDto start date is invalid (must be past): " 
-												+ employeeDto.getBeginningOfEmployment());
-		if(employeeDto.getMonthlySalary() < 0)
+												+ employeeDto.getEntryDate());
+		if(employeeDto.getSalary() < 0)
 			throw new IllegalArgumentException("EmployeeDto salary is invalid (must be positive): " 
-												+ employeeDto.getMonthlySalary());		
+												+ employeeDto.getSalary());		
 			
 		isValid = true;
 		

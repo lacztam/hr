@@ -3,19 +3,36 @@ package hu.webuni.hr.lacztam.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
+@Entity
 public class Employee {
+	
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String name;
 	private String title;
 	private int monthlySalary;
 	private LocalDateTime beginningOfEmployment;
+	
+	@ManyToOne
+	private Company company;
+	
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
 
 	public Employee() {
 	}
 
-	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
 	public Employee(Long id, String name, String title, int monthlySalary, LocalDateTime beginningOfEmployment) {
 		this.id = id;
 		this.name = name;
@@ -24,15 +41,6 @@ public class Employee {
 		this.beginningOfEmployment = beginningOfEmployment; 
 	}
 	
-	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-	public Employee(Employee employee) {
-		this.id = employee.getId();
-		this.name = employee.getName();
-		this.title = employee.getTitle();
-		this.monthlySalary = employee.getMonthlySalary();
-		this.beginningOfEmployment = employee.getBeginningOfEmployment(); 
-	}
-
 	public Long getId() {
 		return id;
 	}

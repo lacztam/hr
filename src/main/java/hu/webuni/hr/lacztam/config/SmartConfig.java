@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import hu.webuni.hr.lacztam.service.EmployeePayService;
+import hu.webuni.hr.lacztam.service.AbstractEmployeePayService;
 import hu.webuni.hr.lacztam.service.EmployeeService;
 import hu.webuni.hr.lacztam.service.SmartEmployeeService;
 
@@ -13,7 +13,7 @@ import hu.webuni.hr.lacztam.service.SmartEmployeeService;
 public class SmartConfig {
 
 	@Bean
-	EmployeePayService employeePayService() {
+	public EmployeeService employeeService() {
 		return new SmartEmployeeService();
 	}
 }

@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
 import hu.webuni.hr.lacztam.mapper.EmployeeMapper;
 import hu.webuni.hr.lacztam.model.Employee;
+import hu.webuni.hr.lacztam.repository.EmployeeRepository;
 import hu.webuni.hr.lacztam.service.EmployeeService;
 import hu.webuni.hr.lacztam.service.validator.EmployeeDtoValidator;
 
@@ -28,29 +29,35 @@ import hu.webuni.hr.lacztam.service.validator.EmployeeDtoValidator;
 public class RestEmployeeController {
 	
 	@Autowired
-	EmployeeDtoValidator validator;
-	
-	@Autowired
 	EmployeeService employeeService;
 	
 	@Autowired
 	EmployeeMapper employeeMapper;
 	
+	@Autowired
+	EmployeeRepository employeeRepository;
+	
 	@GetMapping
-	public List<EmployeeDto> getAll(){
+	public List<EmployeeDto> getEmployees(@RequestParam(required = false) Integer minSalay){
+		List<Employee> employees = null;
+		if(minSalay == null) {
+			employees = employeeService.findAll();
+		} else {
+			employees = employeeRepository.findByMonthlySalaryGreaterThan(minSalay);
+		}
 		return employeeMapper.employeesToDtos(employeeService.findAll());
 	}
 	
 	@GetMapping(params = "minSalary")
 	public List<EmployeeDto> findBySalary(@RequestParam int minSalary){
-		return employeeMapper.employeesToDtos(employeeService.getEmployeesMap().values().stream()
+		return employeeMapper.employeesToDtos(employeeRepository.findAll().stream()
 				.filter(e -> e.getMonthlySalary() > minSalary)
 				.collect(Collectors.toList()));
 	}
 	
 	@GetMapping("/{id}")
 	public EmployeeDto getById(@PathVariable long id) {
-		Employee employee = employeeService.findById(id);
+		Employee employee = employeeRepository.findById(id).orElseThrow();
 		
 		if(employee != null)
 			return employeeMapper.employeeToDto(employee);
@@ -75,7 +82,7 @@ public class RestEmployeeController {
 	@PutMapping("/{id}")
 	public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id, @Valid @RequestBody EmployeeDto employeeDto) {
 		
-		if(!employeeService.getEmployeesMap().containsKey(id)) {
+		if(employeeRepository.findById(id).equals(null)) {
 			return ResponseEntity.notFound().build();
 		}
 		employeeDto.setId(id);

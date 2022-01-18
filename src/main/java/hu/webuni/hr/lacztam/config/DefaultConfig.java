@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import hu.webuni.hr.lacztam.service.DefaultEmployeeService;
-import hu.webuni.hr.lacztam.service.EmployeePayService;
+import hu.webuni.hr.lacztam.service.AbstractEmployeePayService;
 import hu.webuni.hr.lacztam.service.EmployeeService;
 
 @Configuration
@@ -12,7 +12,7 @@ import hu.webuni.hr.lacztam.service.EmployeeService;
 public class DefaultConfig {
 
 	@Bean
-	EmployeePayService employeePayService() {
+	EmployeeService employeeService() {
 		return new DefaultEmployeeService();
 	}
 }

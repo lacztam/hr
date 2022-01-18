@@ -1,12 +1,23 @@
 package hu.webuni.hr.lacztam.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Company {
 
+	@Id
+	@GeneratedValue
 	private long companyRegistrationNumber;
 	private String name;
 	private String address;
+	
+	@OneToMany(mappedBy = "company")
 	private List<Employee> employeesList;
 	
 	public Company() {
@@ -49,6 +60,14 @@ public class Company {
 
 	public void setEmployeesList(List<Employee> employeesList) {
 		this.employeesList = employeesList;
+	}
+	
+	public void addEmployee(Employee employee) {
+		if(this.employeesList == null) {
+			this.employeesList = new ArrayList<>();
+		}
+		this.employeesList.add(employee);
+		employee.setCompany(this);
 	}
 
 	@Override
