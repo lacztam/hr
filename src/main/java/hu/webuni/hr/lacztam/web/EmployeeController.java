@@ -1,21 +1,29 @@
 package hu.webuni.hr.lacztam.web;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
 import hu.webuni.hr.lacztam.mapper.EmployeeMapper;
 import hu.webuni.hr.lacztam.model.Employee;
 import hu.webuni.hr.lacztam.repository.EmployeeRepository;
 import hu.webuni.hr.lacztam.service.EmployeeService;
+import hu.webuni.hr.lacztam.service.EmployeeSpecification;
 
 @Controller
 @RequestMapping("/employees")
@@ -23,6 +31,9 @@ public class EmployeeController {
 	
 	@Autowired
 	EmployeeMapper employeeMapper;
+	
+	@Autowired
+	EmployeeService employeeService;
 	
 	@Autowired
 	EmployeeRepository employeeRepository;
@@ -70,4 +81,6 @@ public class EmployeeController {
 		
 		return "redirect:../";
 	}
+	
+	
 }

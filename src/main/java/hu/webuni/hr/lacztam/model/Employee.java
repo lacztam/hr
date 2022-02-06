@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -21,12 +22,12 @@ public class Employee {
 	private int monthlySalary;
 	private LocalDateTime beginningOfEmployment;
 	
-	@ManyToOne(cascade = {CascadeType.ALL})
-	private Company company;
-	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Position position;
 	 
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+	private Company company;
+
 	public Employee() {
 	}
 
@@ -36,14 +37,6 @@ public class Employee {
 		this.monthlySalary = monthlySalary;
 		this.beginningOfEmployment = beginningOfEmployment; 
 	}
-	
-	public Company getCompany() {
-		return company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
 
 	public Position getPosition() {
 		return position;
@@ -51,6 +44,14 @@ public class Employee {
 
 	public void setPosition(Position position) {
 		this.position = position;
+	}
+	
+	public Company getCompany() {
+		return company;
+	}
+	
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 	
 	public Long getId() {

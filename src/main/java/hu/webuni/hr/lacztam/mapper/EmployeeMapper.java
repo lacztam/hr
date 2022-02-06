@@ -1,11 +1,12 @@
 package hu.webuni.hr.lacztam.mapper;
 
 import java.util.List;
-
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import hu.webuni.hr.lacztam.dto.CompanyDto;
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
+import hu.webuni.hr.lacztam.model.Company;
 import hu.webuni.hr.lacztam.model.Employee;
 
 @Mapper(componentModel = "spring")
@@ -25,4 +26,9 @@ public interface EmployeeMapper {
 	@Mapping(target = "monthlySalary", source = "salary")
 	@Mapping(target = "position.name", source = "title")
 	Employee dtoToEmployee(EmployeeDto employeeDto);
+
+//	@Mapping(target = "employee.company", ignore = true)
+//	CompanyDto companytoDto(Company company);
+//
+//	Company dtoToCompany2 (CompanyDto companyDto);
 }

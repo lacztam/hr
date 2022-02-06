@@ -1,11 +1,14 @@
 package hu.webuni.hr.lacztam.web;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +28,7 @@ import hu.webuni.hr.lacztam.model.Qualification;
 import hu.webuni.hr.lacztam.repository.EmployeeRepository;
 import hu.webuni.hr.lacztam.repository.PositionRepository;
 import hu.webuni.hr.lacztam.service.EmployeeService;
+import hu.webuni.hr.lacztam.service.EmployeeSpecification;
 import hu.webuni.hr.lacztam.service.validator.EmployeeDtoValidator;
 
 @RestController
@@ -76,11 +80,15 @@ public class RestEmployeeController {
 	public EmployeeDto createNewEmployeeDto(@Valid @RequestBody EmployeeDto employeeDto, BindingResult result) {
 		List<Position> pos = positionRepository.findByName(employeeDto.getTitle());
 		Position position = null;
+		
 		if(pos.isEmpty() || pos == null) {
 			position = positionRepository.save(new Position(employeeDto.getTitle(), Qualification.COLLEGE, employeeDto.getSalary()));
 		}else {
-			
+			position = pos.get(0);
+			position.setQualification(Qualification.COLLEGE);
+			position.setMinSalary(employeeDto.getSalary());
 		}
+		
 		Employee employee = employeeMapper.dtoToEmployee(employeeDto);
 		employee.setPosition(position);
 				
@@ -117,4 +125,45 @@ public class RestEmployeeController {
 		return ResponseEntity.ok(employee);
 	}
 	
+	@GetMapping("/spec")
+	public List<EmployeeDto> getSpecifiedEmployee(
+			@RequestParam(required = false) Long id,
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) String position,
+			@RequestParam(required = false) Integer salary,
+			@RequestParam(required = false) LocalDateTime entryDate,
+			@RequestParam(required = false) String company ) {
+		
+		Specification<Employee> spec = Specification.where(null);
+		
+		if(id != null && id > 0)
+			spec = spec.and(EmployeeSpecification.hasId(id));
+		
+		if(StringUtils.hasText(name))
+			spec = spec.and(EmployeeSpecification.hasName(name));
+		
+		if(StringUtils.hasText(position))
+			spec = spec.and(EmployeeSpecification.hasPosition(position));
+		
+		if(salary != null && salary > 0)
+			spec = spec.and(EmployeeSpecification.hasSalary(salary));
+		
+		if(entryDate != null)
+			spec = spec.and(EmployeeSpecification.hasEntryDate(entryDate));
+		
+		List<Employee> emps = employeeRepository.findAll(spec);
+		if(emps != null && emps.size() > 0)
+			System.out.println("spec:" + emps.get(0).getName());
+		
+		for(Employee e : emps) {
+			System.out.println("id:" + e.getId());
+			System.out.println("name:" + e.getName());
+			System.out.println("salary:" + e.getMonthlySalary());
+			System.out.println("entryDate:" + e.getBeginningOfEmployment());
+			System.out.println("Position:" + e.getPosition().getName());
+			System.out.println("Company:" + e.getCompany().getName());
+		}
+		
+		return employeeMapper.employeesToDtos(employeeRepository.findAll(spec));
+	}
 }

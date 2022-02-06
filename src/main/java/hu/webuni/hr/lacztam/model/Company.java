@@ -5,12 +5,29 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 
 import org.springframework.lang.Nullable;
 
+@NamedEntityGraph(name = "Company.fullList",
+attributeNodes = {
+    @NamedAttributeNode("employeesList"),
+    @NamedAttributeNode(value = "employeesList", subgraph = "employees-subgraph")
+},
+subgraphs = {
+        @NamedSubgraph(name = "employees-subgraph",
+            attributeNodes = {
+                @NamedAttributeNode("position")
+            }
+        )
+    }
+)
 @Entity
 public class Company {
 
@@ -22,7 +39,7 @@ public class Company {
 	private String address;
 	private CompanyType companyType;
 	
-	@OneToMany(mappedBy = "company", cascade = {CascadeType.ALL})
+	@OneToMany(mappedBy = "company", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
 	private List<Employee> employeesList;
 	
 	public Company() {

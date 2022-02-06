@@ -31,14 +31,14 @@ import hu.webuni.hr.lacztam.service.CompanyService;
 
 @RestController
 @RequestMapping("/api/companies")
-public class RestCompanyDtoController {
+public class CompanyController {
 
 	private CompanyService companyService;
 	private CompanyMapper companyMapper;
 	private EmployeeMapper employeeMapper;
 	private CompanyRepository companyRepository;
 	
-	public RestCompanyDtoController(CompanyService companyService, CompanyMapper companyMapper,
+	public CompanyController(CompanyService companyService, CompanyMapper companyMapper,
 			EmployeeMapper employeeMapper, CompanyRepository companyRepository) {
 		super();
 		this.companyService = companyService;
@@ -148,9 +148,11 @@ public class RestCompanyDtoController {
 	}
 	
 	@GetMapping(params = "aboveSalary")
-	public List<CompanyDto> getCompaniesAboveEmpSalary(@RequestParam int aboveSalary,
+	public List<CompanyDto> getCompaniesAboveEmpSalary(
+			@RequestParam int aboveSalary,
 			@RequestParam(required = false) Boolean full,
 			@SortDefault("id") Pageable pageable) {
+		
 		Page<Company> page = companyRepository.findByEmployeeWithSalaryHigherThan(pageable,aboveSalary);
 		List<Company> filteredCompanies = page.getContent();
 		return mapCompanies(filteredCompanies, full);
@@ -162,4 +164,17 @@ public class RestCompanyDtoController {
 		return mapCompanies(filteredCompanies, full);
 	}
 	
+	@GetMapping("/allComp")
+	public List<CompanyDto> namedQuery(@RequestParam(required = true) int node){
+		
+		switch (node) {
+		case 1:
+			return companyMapper.companiesToDtos(companyRepository.namedQuery1());
+		case 2:
+			return companyMapper.companiesToDtos(companyRepository.namedQuery2());
+		default:
+		}
+			
+		return null;
+	}
 }

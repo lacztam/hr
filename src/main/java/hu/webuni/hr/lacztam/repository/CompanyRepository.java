@@ -3,6 +3,7 @@ package hu.webuni.hr.lacztam.repository;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import hu.webuni.hr.lacztam.model.Company;
@@ -31,5 +32,15 @@ public interface CompanyRepository extends JpaRepository<Company, Long>{
 			+ "AND e.monthlySalary < :minSalary")
 	public int updateSalaries(long companyId, String position, int minSalary);
 	
+	
 	public Company findByName(String companyName);
+
+	@EntityGraph(attributePaths = { "employeesList", "employeesList.position" })
+	@Query("SELECT c FROM Company c")
+	public List<Company> namedQuery1();
+	
+	@EntityGraph("Company.fullList")
+	@Query("SELECT c FROM Company c")
+	public List<Company> namedQuery2();
+	
 }
