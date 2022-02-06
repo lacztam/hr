@@ -1,6 +1,8 @@
 package hu.webuni.hr.lacztam.dto;
 
 import java.time.LocalDateTime;
+
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Positive;
@@ -18,6 +20,7 @@ public class EmployeeDto {
 	@Past
 	private LocalDateTime entryDate;
 	
+	@ManyToOne
 	private CompanyDto companyDto;
 
 	public EmployeeDto() {

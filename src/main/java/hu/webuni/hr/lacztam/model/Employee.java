@@ -3,6 +3,9 @@ package hu.webuni.hr.lacztam.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,12 +18,24 @@ public class Employee {
 	@GeneratedValue
 	private Long id;
 	private String name;
-	private String title;
 	private int monthlySalary;
 	private LocalDateTime beginningOfEmployment;
 	
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})
 	private Company company;
+	
+	@ManyToOne
+	private Position position;
+	 
+	public Employee() {
+	}
+
+	public Employee(Long id, String name, int monthlySalary, LocalDateTime beginningOfEmployment) {
+		this.id = id;
+		this.name = name;
+		this.monthlySalary = monthlySalary;
+		this.beginningOfEmployment = beginningOfEmployment; 
+	}
 	
 	public Company getCompany() {
 		return company;
@@ -30,15 +45,12 @@ public class Employee {
 		this.company = company;
 	}
 
-	public Employee() {
+	public Position getPosition() {
+		return position;
 	}
 
-	public Employee(Long id, String name, String title, int monthlySalary, LocalDateTime beginningOfEmployment) {
-		this.id = id;
-		this.name = name;
-		this.title = title;
-		this.monthlySalary = monthlySalary;
-		this.beginningOfEmployment = beginningOfEmployment; 
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 	
 	public Long getId() {
@@ -55,14 +67,6 @@ public class Employee {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public int getMonthlySalary() {
@@ -103,9 +107,4 @@ public class Employee {
 		return (int) monthsBetweenBeginningOfWorkAndNow;
 	}
 
-	@Override
-	public String toString() {
-		return "Employee [id=" + id + ", name=" + name + ", title=" + title + ", monthlySalary=" + monthlySalary
-				+ ", beginningOfEmployment=" + beginningOfEmployment + "]";
-	}
 }

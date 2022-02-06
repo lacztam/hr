@@ -3,6 +3,11 @@ package hu.webuni.hr.lacztam.web;
 import java.util.List;
 import java.util.NoSuchElementException;
 import javax.validation.Valid;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
+import org.springframework.data.web.SortDefault.SortDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,6 +26,7 @@ import hu.webuni.hr.lacztam.dto.EmployeeDto;
 import hu.webuni.hr.lacztam.mapper.CompanyMapper;
 import hu.webuni.hr.lacztam.mapper.EmployeeMapper;
 import hu.webuni.hr.lacztam.model.Company;
+import hu.webuni.hr.lacztam.repository.CompanyRepository;
 import hu.webuni.hr.lacztam.service.CompanyService;
 
 @RestController
@@ -30,14 +36,15 @@ public class RestCompanyDtoController {
 	private CompanyService companyService;
 	private CompanyMapper companyMapper;
 	private EmployeeMapper employeeMapper;
-	
+	private CompanyRepository companyRepository;
 	
 	public RestCompanyDtoController(CompanyService companyService, CompanyMapper companyMapper,
-			EmployeeMapper employeeMapper) {
+			EmployeeMapper employeeMapper, CompanyRepository companyRepository) {
 		super();
 		this.companyService = companyService;
 		this.companyMapper = companyMapper;
 		this.employeeMapper = employeeMapper;
+		this.companyRepository = companyRepository;
 	}
 
 	@GetMapping
@@ -51,14 +58,9 @@ public class RestCompanyDtoController {
 		}
 	}
 	
-	private boolean isFull(Boolean full) {
-		return full != null && full;
-	}
-	
 	private Company findByIdOrThrow(long id) {
-		return companyService.findById(id)
+		return companyRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		 
 	}
 	
 	@GetMapping("/{companyId}")
@@ -78,13 +80,17 @@ public class RestCompanyDtoController {
 	
 	@PutMapping("/{companyId}")
 	public ResponseEntity<CompanyDto> modifyCompany(@PathVariable long companyId, @Valid @RequestBody CompanyDto companyDto){
-		companyDto.setCompanyRegistrationNumber(companyId);
-		Company updatedCompany = companyService.update(companyMapper.dtoToCompany(companyDto));
-		if(updatedCompany == null) {
+		CompanyDto argCompany = companyDto;
+		Company updateCompany = companyMapper.dtoToCompany(argCompany);
+		
+		if(updateCompany == null) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(companyDto);
+		updateCompany.setId(companyId);
+		updateCompany = companyService.update(updateCompany);
+		
+		return ResponseEntity.ok(companyMapper.companytoDto(updateCompany));
 	}
 	
 	@DeleteMapping("/{companyId}")
@@ -94,11 +100,12 @@ public class RestCompanyDtoController {
 	
 	@PostMapping("/{companyId}/addEmployee")
 	public CompanyDto addEmployeeToCompany(@PathVariable long companyId, @Valid @RequestBody EmployeeDto employeeDto) {
-			try {
-				return companyMapper.companytoDto(companyService.addEmployee(companyId, employeeMapper.dtoToEmployee(employeeDto)));
-			}catch (NoSuchElementException e) {
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-			}
+		
+		try {
+			return companyMapper.companytoDto(companyService.addEmployee(companyId, employeeDto));
+		}catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	@DeleteMapping("/{companyId}/deleteEmployee/{employeeId}")
@@ -110,15 +117,15 @@ public class RestCompanyDtoController {
 		}
 	}
 	
-//	@PostMapping("/{companyId}/changeEmployeeList")
-//	public CompanyDto changeEmployeeList(@PathVariable long companyId,
-//										@RequestBody List<EmployeeDto> employeeList) {
-//		
-//		Company company = findByIdOrThrow(companyId);
-//		company.setEmployeesList(employeeMapper.dtosToEmployees(employeeList));
-//		
-//		return companyMapper.companytoDto(company);
-//	}
+	@PostMapping("/{companyId}/changeEmployeeList")
+	public CompanyDto changeEmployeeList(@PathVariable long companyId,
+										@RequestBody List<EmployeeDto> employeeList) {
+		
+		Company company = findByIdOrThrow(companyId);
+		companyService.replaceEmployees(company.getId(), employeeMapper.dtosToEmployees(employeeList));
+		
+		return companyMapper.companytoDto(company);
+	}
 	
 	@PutMapping("/{companyId}/employees")
 	public CompanyDto replaceEmployees(@PathVariable long companyId, @RequestBody List<EmployeeDto> newEmployees) {
@@ -128,4 +135,31 @@ public class RestCompanyDtoController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	private boolean isFull(Boolean full) {
+		return full != null && full;
+	}
+	
+	private List<CompanyDto> mapCompanies(List<Company> companies, Boolean full){
+		if(isFull(full))
+			return companyMapper.companiesToDtos(companies);
+		else
+			return companyMapper.companiesToSummaryDtos(companies);
+	}
+	
+	@GetMapping(params = "aboveSalary")
+	public List<CompanyDto> getCompaniesAboveEmpSalary(@RequestParam int aboveSalary,
+			@RequestParam(required = false) Boolean full,
+			@SortDefault("id") Pageable pageable) {
+		Page<Company> page = companyRepository.findByEmployeeWithSalaryHigherThan(pageable,aboveSalary);
+		List<Company> filteredCompanies = page.getContent();
+		return mapCompanies(filteredCompanies, full);
+	}
+	
+	@GetMapping(params = "employeeCount")
+	public List<CompanyDto> getCompaniesAboveEmployeeCount(@RequestParam int employeeCount, Boolean full){
+		List<Company> filteredCompanies = companyRepository.findByEmployeeCountHigherThan(employeeCount);
+		return mapCompanies(filteredCompanies, full);
+	}
+	
 }

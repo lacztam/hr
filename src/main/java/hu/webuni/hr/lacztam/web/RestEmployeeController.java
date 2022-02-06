@@ -20,7 +20,10 @@ import org.springframework.web.server.ResponseStatusException;
 import hu.webuni.hr.lacztam.dto.EmployeeDto;
 import hu.webuni.hr.lacztam.mapper.EmployeeMapper;
 import hu.webuni.hr.lacztam.model.Employee;
+import hu.webuni.hr.lacztam.model.Position;
+import hu.webuni.hr.lacztam.model.Qualification;
 import hu.webuni.hr.lacztam.repository.EmployeeRepository;
+import hu.webuni.hr.lacztam.repository.PositionRepository;
 import hu.webuni.hr.lacztam.service.EmployeeService;
 import hu.webuni.hr.lacztam.service.validator.EmployeeDtoValidator;
 
@@ -36,6 +39,9 @@ public class RestEmployeeController {
 	
 	@Autowired
 	EmployeeRepository employeeRepository;
+	
+	@Autowired
+	PositionRepository positionRepository;
 	
 	@GetMapping
 	public List<EmployeeDto> getEmployees(@RequestParam(required = false) Integer minSalay){
@@ -57,6 +63,7 @@ public class RestEmployeeController {
 	
 	@GetMapping("/{id}")
 	public EmployeeDto getById(@PathVariable long id) {
+		
 		Employee employee = employeeRepository.findById(id).orElseThrow();
 		
 		if(employee != null)
@@ -67,16 +74,21 @@ public class RestEmployeeController {
 	
 	@PostMapping
 	public EmployeeDto createNewEmployeeDto(@Valid @RequestBody EmployeeDto employeeDto, BindingResult result) {
-		Employee employee = employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
-		
-//		Ez is jó!
-//		validator.validate(employeeDto, result);
-		
+		List<Position> pos = positionRepository.findByName(employeeDto.getTitle());
+		Position position = null;
+		if(pos.isEmpty() || pos == null) {
+			position = positionRepository.save(new Position(employeeDto.getTitle(), Qualification.COLLEGE, employeeDto.getSalary()));
+		}else {
+			
+		}
+		Employee employee = employeeMapper.dtoToEmployee(employeeDto);
+		employee.setPosition(position);
+				
 		if(result.hasErrors()) {
 			throw new IllegalArgumentException(result.getAllErrors().toString());
 		}
 		
-		return employeeMapper.employeeToDto(employee);
+		return employeeMapper.employeeToDto(employeeRepository.save(employee));
 	}
 	
 	@PutMapping("/{id}")
@@ -94,4 +106,15 @@ public class RestEmployeeController {
 	public void deleteEmployee(@PathVariable long id) {
 		employeeService.delete(id);
 	}
+	
+	@GetMapping("/map")
+	public ResponseEntity<Employee> mapDtoToEmployee(@RequestBody EmployeeDto employeeDto) {
+		List<Position> pos = positionRepository.findByName(employeeDto.getTitle());
+		Employee employee = employeeMapper.dtoToEmployee(employeeDto);
+		if(pos.isEmpty() || pos == null)
+			employee.setPosition(positionRepository.save(new Position(employeeDto.getTitle(),Qualification.COLLEGE,employeeDto.getSalary())));
+		employeeRepository.save(employee);	
+		return ResponseEntity.ok(employee);
+	}
+	
 }
