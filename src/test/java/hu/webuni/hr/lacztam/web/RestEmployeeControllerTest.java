@@ -24,68 +24,54 @@ public class RestEmployeeControllerTest {
 	
 	@Test
 	void testName() throws Exception {
-
-/*		Test cases for creating new employees 	*/
-	
-//		OK
 		EmployeeDto e1 = new EmployeeDto(5L, "Employee Name", "SomeTitle", 1500, LocalDateTime.of(2000, 10, 10, 0, 0));
 		saveEmployee(e1);
 		
-//		name = null
-//		EmployeeDto e2 = new EmployeeDto(2L, null, "SomeTitle", 1500, LocalDateTime.now());
-//		createNewEmployeeDto(e2);
-		
-//		name = ""
-//		EmployeeDto e3 = new EmployeeDto(3L, "", "SomeTitle", 2000, LocalDateTime.now());
-//		createNewEmployeeDto(e3);
-	
-//		title = null
-//		EmployeeDto e4 = new EmployeeDto(4L, "Employee Name", null , 2000, LocalDateTime.now());
-//		createNewEmployeeDto(e4);
-		
-//		title = ""
-//		EmployeeDto e5 = new EmployeeDto(5L, "Employee Name", "" , 2000, LocalDateTime.now());
-//		createNewEmployeeDto(e5);
-		
-//		salary = -1000
-//		EmployeeDto e6 = new EmployeeDto(6L, "Employee Name", "Some Title" , -1000, LocalDateTime.now());
-//		createNewEmployeeDto(e6);	
-		
-//		start date is in future
-//		EmployeeDto e7 = new EmployeeDto(7L, "Employee Name", "Some Title" , -1000, LocalDateTime.of(2100, 10, 10, 0, 0));
-//		createNewEmployeeDto(e7);			
-	
-	
-/*		Test cases for modifing employees 	*/
-	
-//		OK
 		EmployeeDto e2 = new EmployeeDto(2L, "SomeName", "SomeTitle", 2000, LocalDateTime.of(2000, 10, 10, 0, 0));
 		modifyEmployeeDto(1L, e2);
-		
-//		name = null
-//		EmployeeDto e3 = new EmployeeDto(3L, null, "SomeTitle", 2000, LocalDateTime.now());
-//		modifyEmployeeDto(1L, e3);
-		
-//		name = ""
-//		EmployeeDto e3 = new EmployeeDto(3L, "", "SomeTitle", 2000, LocalDateTime.now());
-//		modifyEmployeeDto(1L, e3);
+	}
 	
-//		title = null
-//		EmployeeDto e4 = new EmployeeDto(4L, "Employee Name", null , 2000, LocalDateTime.now());
-//		modifyEmployeeDto(1L, e4);
-		
-//		title = ""
-//		EmployeeDto e5 = new EmployeeDto(5L, "Employee Name", "" , 2000, LocalDateTime.now());
-//		modifyEmployeeDto(1L, e5);
-		
-//		salary = -1000
-//		EmployeeDto e6 = new EmployeeDto(6L, "Employee Name", "Some Title" , -1000, LocalDateTime.now());
-//		modifyEmployeeDto(1L, e6);	
-		
-//		start date is in future
-//		EmployeeDto e7 = new EmployeeDto(7L, "Employee Name", "Some Title" , -1000, LocalDateTime.of(2100, 10, 10, 0, 0));
-//		modifyEmployeeDto(1L, e7);	
-				
+	@Test
+	void nullTitle() throws Exception{
+		EmployeeDto e4 = new EmployeeDto(4L, "Employee Name", null , 2000, LocalDateTime.now());
+		saveEmployee(e4)
+			.expectStatus()
+			.isBadRequest();		
+	}
+	@Test
+	void emptyTitle() throws Exception{
+		EmployeeDto e5 = new EmployeeDto(5L, "Employee Name", "" , 2000, LocalDateTime.now());
+		saveEmployee(e5)
+			.expectStatus()
+			.isBadRequest();	
+	}
+	@Test
+	void negativeSalary() throws Exception{
+		EmployeeDto e6 = new EmployeeDto(6L, "Employee Name", "Some Title" , -1000, LocalDateTime.now());
+		saveEmployee(e6)
+			.expectStatus()
+			.isBadRequest();	
+	}
+	@Test
+	void futureStartDate() throws Exception{
+		EmployeeDto e7 = new EmployeeDto(7L, "Employee Name", "Some Title" , -1000, LocalDateTime.of(2100, 10, 10, 0, 0));
+		saveEmployee(e7)
+			.expectStatus()
+			.isBadRequest();	
+	}
+	@Test
+	void nullName() throws Exception{
+		EmployeeDto e3 = new EmployeeDto(3L, null, "SomeTitle", 2000, LocalDateTime.now());
+		saveEmployee(e3)
+			.expectStatus()
+			.isBadRequest();	
+	}
+	@Test
+	void emptyName() throws Exception{
+		EmployeeDto e3 = new EmployeeDto(3L, "", "SomeTitle", 2000, LocalDateTime.now());
+		saveEmployee(e3)
+			.expectStatus()
+			.isBadRequest();	
 	}
 	
 	@Test

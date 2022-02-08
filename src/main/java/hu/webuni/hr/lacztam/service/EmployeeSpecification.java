@@ -2,7 +2,6 @@ package hu.webuni.hr.lacztam.service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-
 import org.springframework.data.jpa.domain.Specification;
 import hu.webuni.hr.lacztam.model.Employee;
 import hu.webuni.hr.lacztam.model.Employee_;
@@ -42,6 +41,6 @@ public class EmployeeSpecification {
 	}
 	
 	private static int salaryPlus5Percentage(int salary) {
-		return (int)(Double.valueOf(salary) * 1.05);
+		return (int)(Double.valueOf(salary) + (Double.valueOf(salary) * 0.05));
 	}
 }

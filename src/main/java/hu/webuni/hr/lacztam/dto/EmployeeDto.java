@@ -24,7 +24,6 @@ public class EmployeeDto {
 	private CompanyDto companyDto;
 
 	public EmployeeDto() {
-
 	}
 
 	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

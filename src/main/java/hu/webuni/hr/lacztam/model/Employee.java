@@ -3,6 +3,7 @@ package hu.webuni.hr.lacztam.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Employee {
@@ -27,7 +30,10 @@ public class Employee {
 	 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
 	private Company company;
-
+	
+	@OneToOne
+	private VacationPlanner planner;
+	
 	public Employee() {
 	}
 

@@ -102,9 +102,9 @@ public class RestEmployeeController {
 	@PutMapping("/{id}")
 	public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id, @Valid @RequestBody EmployeeDto employeeDto) {
 		
-		if(employeeRepository.findById(id).equals(null)) {
+		if(employeeRepository.findById(id).equals(null)) 
 			return ResponseEntity.notFound().build();
-		}
+			
 		employeeDto.setId(id);
 		employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
 		return ResponseEntity.ok(employeeDto);
@@ -117,10 +117,13 @@ public class RestEmployeeController {
 	
 	@GetMapping("/map")
 	public ResponseEntity<Employee> mapDtoToEmployee(@RequestBody EmployeeDto employeeDto) {
+		
 		List<Position> pos = positionRepository.findByName(employeeDto.getTitle());
 		Employee employee = employeeMapper.dtoToEmployee(employeeDto);
+		
 		if(pos.isEmpty() || pos == null)
 			employee.setPosition(positionRepository.save(new Position(employeeDto.getTitle(),Qualification.COLLEGE,employeeDto.getSalary())));
+		
 		employeeRepository.save(employee);	
 		return ResponseEntity.ok(employee);
 	}
@@ -161,7 +164,8 @@ public class RestEmployeeController {
 			System.out.println("salary:" + e.getMonthlySalary());
 			System.out.println("entryDate:" + e.getBeginningOfEmployment());
 			System.out.println("Position:" + e.getPosition().getName());
-			System.out.println("Company:" + e.getCompany().getName());
+			if(e.getCompany() != null)
+				System.out.println("Company:" + e.getCompany().getName());
 		}
 		
 		return employeeMapper.employeesToDtos(employeeRepository.findAll(spec));
