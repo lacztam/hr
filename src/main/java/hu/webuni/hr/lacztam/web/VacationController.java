@@ -1,5 +1,6 @@
 package hu.webuni.hr.lacztam.web;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import hu.webuni.hr.lacztam.dto.VacationPlannerDto;
+import hu.webuni.hr.lacztam.mapper.VacationPlannerMapper;
 import hu.webuni.hr.lacztam.model.Employee;
 import hu.webuni.hr.lacztam.model.VacationPlanner;
 import hu.webuni.hr.lacztam.repository.EmployeeRepository;
@@ -18,26 +21,30 @@ import hu.webuni.hr.lacztam.repository.VacationRepository;
 @RequestMapping("/api/vacations")
 public class VacationController {
 	
-	@Autowired
-	VacationRepository vacationRepository;
+	@Autowired VacationRepository vacationRepository;
+	@Autowired EmployeeRepository employeeRepository;
+	@Autowired VacationPlannerMapper VPmapper;
 	
-	@Autowired
-	EmployeeRepository employeeRepository;
-	
-	@GetMapping("/{id}")
-	public VacationPlanner vacationById(@PathVariable Long id){
+	@GetMapping
+	public List<VacationPlannerDto> vacationById(){
 		List<Employee> emps = employeeRepository.findAll();
-		Employee claimer = emps.get(0);
-		Employee principal = emps.get(1);
+		Employee claimer = emps.get(3);
+		Employee principal = emps.get(4);
 		
-		LocalDateTime vacationStart = LocalDateTime.now().plusMonths(2);
-		LocalDateTime vacationEnd = LocalDateTime.now().plusMonths(2).plusDays(14);
+		LocalDate vacationStart = LocalDate.now().plusMonths(2);
+		LocalDate vacationEnd = LocalDate.now().plusMonths(2).plusDays(14);
 		
-		VacationPlanner newVacation = new VacationPlanner(1L, claimer, null, principal ,vacationStart, vacationEnd);
+		VacationPlanner newVacation = new VacationPlanner();
+		newVacation.setVacationClaimer(claimer);
+		newVacation.setPrincipal(principal);
+		newVacation.setDateOfSubmission(LocalDateTime.now());
+		newVacation.setVacationStart(vacationStart);
+		newVacation.setVacationEnd(vacationEnd);
 		
 		vacationRepository.save(newVacation);
 		
-		return vacationRepository.findById(1L).get();
+		List<VacationPlannerDto> vacationPlanners = VPmapper.plannersToDtos(vacationRepository.findAll());
+		return vacationPlanners;
 	}
 
 }

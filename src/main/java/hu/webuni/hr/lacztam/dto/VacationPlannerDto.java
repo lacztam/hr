@@ -1,63 +1,52 @@
-package hu.webuni.hr.lacztam.model;
+package hu.webuni.hr.lacztam.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
-@Entity
-public class VacationPlanner {
+public class VacationPlannerDto {
 
-	@Id
-	@GeneratedValue
-	private Long id;
+	private long id;
 	
-	@ManyToOne
-	private Employee vacationClaimer;
+	@NotNull
+	private Long vacationClaimerId;
 	
-	@ManyToOne
-	private Employee principal;
+	private Long principalId;
 	private Boolean state = null;
 	
 	private LocalDateTime dateOfSubmission;
 	private LocalDateTime dateOfApprove;
 	
+	@NotNull
 	private LocalDate vacationStart;
+	@NotNull
 	private LocalDate vacationEnd;
 	
-	public VacationPlanner() {
-		this.dateOfSubmission = LocalDateTime.now();
+	public VacationPlannerDto() {
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	public Employee getVacationClaimer() {
-		return vacationClaimer;
+	public Long getVacationClaimerId() {
+		return vacationClaimerId;
 	}
 
-	public void setVacationClaimer(Employee vacationClaimer) {
-		this.vacationClaimer = vacationClaimer;
+	public void setVacationClaimerId(Long vacationClaimerId) {
+		this.vacationClaimerId = vacationClaimerId;
 	}
 
-	public Employee getPrincipal() {
-		return principal;
+	public Long getPrincipalId() {
+		return principalId;
 	}
 
-	public void setPrincipal(Employee principal) {
-		this.principal = principal;
+	public void setPrincipalId(Long principalId) {
+		this.principalId = principalId;
 	}
 
 	public Boolean getState() {
@@ -99,5 +88,4 @@ public class VacationPlanner {
 	public void setVacationEnd(LocalDate vacationEnd) {
 		this.vacationEnd = vacationEnd;
 	}
-
 }

@@ -41,11 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()
 			.csrf().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // REST apinál ezt alkalmazzuk leggyakrabban
-			.and()
-			.authorizeHttpRequests() //védettek legyen bizonyos url ek
-			.antMatchers(HttpMethod.POST, "/api/companies/**").hasAuthority("admin") // POST olásra, csak admin mehet a /api/companies oldalra és aloldalakra
-			.antMatchers(HttpMethod.PUT, "/api/companies/**").hasAnyAuthority("user", "admin")
-			.anyRequest().authenticated(); 
+//			.and()
+//			.authorizeHttpRequests() //védettek legyen bizonyos url ek
+//			.antMatchers(HttpMethod.POST, "/api/companies/**").hasAuthority("admin") // POST olásra, csak admin mehet a /api/companies oldalra és aloldalakra
+//			.antMatchers(HttpMethod.PUT, "/api/companies/**").hasAnyAuthority("user", "admin")
+//			.anyRequest().authenticated(); 
+			;
 	}
 	
 }

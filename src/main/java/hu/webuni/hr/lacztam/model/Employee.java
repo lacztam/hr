@@ -25,14 +25,17 @@ public class Employee {
 	private int monthlySalary;
 	private LocalDateTime beginningOfEmployment;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Position position;
 	 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+	@ManyToOne
 	private Company company;
 	
-	@OneToOne
-	private VacationPlanner planner;
+	@OneToMany(mappedBy = "vacationClaimer")
+	private List<VacationPlanner> vacationPlanners;
+	
+	@ManyToOne
+	private Employee manager;
 	
 	public Employee() {
 	}
@@ -114,4 +117,19 @@ public class Employee {
 		return (int) monthsBetweenBeginningOfWorkAndNow;
 	}
 
+	public List<VacationPlanner> getPlannerList() {
+		return vacationPlanners;
+	}
+
+	public void setPlannerList(List<VacationPlanner> plannerList) {
+		this.vacationPlanners = plannerList;
+	}
+
+	public Employee getManager() {
+		return manager;
+	}
+
+	public void setManager(Employee manager) {
+		this.manager = manager;
+	}
 }
