@@ -19,9 +19,9 @@ public class VacationSpecification {
 		return (root, cq, cb) -> cb.equal(root.get(VacationPlanner_.state), state); 
 	}
 	
-//	public static Specification<VacationPlanner> hasName(String name){
-//		return (root, cq, cb) -> cb.like(root.get(VacationPlanner_.principal.getName()), name + "%");	
-//	}
+	public static Specification<VacationPlanner> hasName(String name){
+		return (root, cq, cb) -> cb.like(cb.lower(root.get(VacationPlanner_.principal.getName())), (name + "%").toLowerCase());	
+	}
 
 	public static Specification<VacationPlanner> hasBetweenSubmission(LocalDateTime startBetweenSubmission, LocalDateTime endBetweenSubmission){
 		return (root, cq, cb) -> cb.between(root.get(VacationPlanner_.dateOfSubmission), startBetweenSubmission, endBetweenSubmission);

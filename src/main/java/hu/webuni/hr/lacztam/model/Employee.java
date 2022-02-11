@@ -3,6 +3,7 @@ package hu.webuni.hr.lacztam.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -32,10 +33,13 @@ public class Employee {
 	private Company company;
 	
 	@OneToMany(mappedBy = "vacationClaimer")
-	private List<VacationPlanner> vacationPlanners;
+	private List<VacationPlanner> vacationPlanners = new ArrayList<VacationPlanner>();
 	
 	@ManyToOne
 	private Employee manager;
+	
+	private String username;
+	private String password; 
 	
 	public Employee() {
 	}
@@ -117,6 +121,14 @@ public class Employee {
 		return (int) monthsBetweenBeginningOfWorkAndNow;
 	}
 
+	public void addVacationToVacationPlannerList(VacationPlanner vacationPlanner) {
+		if(this.vacationPlanners == null)
+			this.vacationPlanners = new ArrayList<>();
+		
+		this.vacationPlanners.add(vacationPlanner);
+		vacationPlanner.setVacationClaimer(this);
+	}
+	
 	public List<VacationPlanner> getPlannerList() {
 		return vacationPlanners;
 	}
@@ -131,5 +143,29 @@ public class Employee {
 
 	public void setManager(Employee manager) {
 		this.manager = manager;
+	}
+
+	public List<VacationPlanner> getVacationPlanners() {
+		return vacationPlanners;
+	}
+
+	public void setVacationPlanners(List<VacationPlanner> vacationPlanners) {
+		this.vacationPlanners = vacationPlanners;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,15 +22,10 @@ import hu.webuni.hr.lacztam.repository.PositionRepository;
 @Service
 public class InitDbService {
 
-	@Autowired
-	EmployeeRepository employeeRepository;
-	
-	@Autowired
-	CompanyRepository companyRepository;
-	
-	@Autowired
-	PositionRepository positionRepository;
-	
+	@Autowired EmployeeRepository employeeRepository;
+	@Autowired CompanyRepository companyRepository;
+	@Autowired PositionRepository positionRepository;
+	@Autowired PasswordEncoder passwordEncoder;
 	public void clearDB() {
 		employeeRepository.deleteAll();
 		companyRepository.deleteAll();
@@ -67,11 +63,15 @@ public class InitDbService {
 		Employee e1 = new Employee(1L, "Klára", 250000, LocalDateTime.of(2010, 1, 1, 01, 01, 01) );
 		e1.setCompany(companyRepository.findByName("Elso Ceg"));
 		e1.setPosition(positionRepository.findByName("Fejlesztő").get(0));
+		e1.setUsername("user");
+		e1.setPassword(passwordEncoder.encode("pw"));
 		employeeRepository.save(e1);
 		
 		Employee e2 = new Employee(2L, "Ildikó", 300000, LocalDateTime.of(2011, 3, 04, 01, 01, 01) );
 		e2.setCompany(companyRepository.findByName("Elso Ceg"));
 		e2.setPosition(positionRepository.findByName("Tesztelő").get(0));
+		e2.setUsername("admin");
+		e2.setPassword(passwordEncoder.encode("pw"));
 		employeeRepository.save(e2);
 		
 		Employee e3 = new Employee(3L, "Péter", 450000, LocalDateTime.of(2012, 5, 6, 01, 01, 01) ); 
