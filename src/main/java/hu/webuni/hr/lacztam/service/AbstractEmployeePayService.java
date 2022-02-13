@@ -18,7 +18,7 @@ public abstract class AbstractEmployeePayService implements EmployeeService{
 
 	@Override
 	public Employee update(Employee employee) {
-		if(employeeRepository.existsById(employee.getId()))
+		if(employeeRepository.existsById(employee.getEmployeeId()))
 			return null;
 		return employeeRepository.save (employee);
 	}

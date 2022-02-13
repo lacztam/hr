@@ -12,23 +12,21 @@ import hu.webuni.hr.lacztam.model.Employee;
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper {
 	
+	
 	List<EmployeeDto> employeesToDtos(List<Employee> employees);
 	
 	List<Employee> dtosToEmployees(List<EmployeeDto> employees);
 	
+	@Mapping(target = "id", source = "employeeId")
 	@Mapping(target = "entryDate", source = "beginningOfEmployment")
 	@Mapping(target = "company.employeesList", ignore = true)
 	@Mapping(target = "title", source = "position.name")
 	@Mapping(target = "salary", source = "monthlySalary")
 	EmployeeDto employeeToDto(Employee employee);
 
+	@Mapping(target = "employeeId", source = "id")	
 	@Mapping(target = "beginningOfEmployment", source = "entryDate")
 	@Mapping(target = "monthlySalary", source = "salary")
 	@Mapping(target = "position.name", source = "title")
 	Employee dtoToEmployee(EmployeeDto employeeDto);
-
-//	@Mapping(target = "employee.company", ignore = true)
-//	CompanyDto companytoDto(Company company);
-//
-//	Company dtoToCompany2 (CompanyDto companyDto);
 }

@@ -21,7 +21,8 @@ public class Employee {
 	
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long employeeId;
+	
 	private String name;
 	private int monthlySalary;
 	private LocalDateTime beginningOfEmployment;
@@ -45,67 +46,12 @@ public class Employee {
 	}
 
 	public Employee(Long id, String name, int monthlySalary, LocalDateTime beginningOfEmployment) {
-		this.id = id;
+		this.employeeId = id;
 		this.name = name;
 		this.monthlySalary = monthlySalary;
 		this.beginningOfEmployment = beginningOfEmployment; 
 	}
 
-	public Position getPosition() {
-		return position;
-	}
-
-	public void setPosition(Position position) {
-		this.position = position;
-	}
-	
-	public Company getCompany() {
-		return company;
-	}
-	
-	public void setCompany(Company company) {
-		this.company = company;
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getMonthlySalary() {
-		return monthlySalary;
-	}
-
-	public void setMonthlySalary(int monthlySalary) {
-		this.monthlySalary = (int) monthlySalary;
-	}
-
-	// returns with the LocalDateTime format
-	public LocalDateTime getBeginningOfEmployment() {
-		return beginningOfEmployment;
-	}
-
-	// returns a string with yyyy-mm-dd format
-	public String string_getBeginningOfEmployment() {
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		return beginningOfEmployment.format(format);
-	}
-
-	public void setBeginningOfEmployment(LocalDateTime beginningOfEmployment) {
-		this.beginningOfEmployment = beginningOfEmployment;
-	}
-	
 	public int getWorkedMonthsSinceStart() {
 		LocalDateTime now = LocalDateTime.now();
 		int currentDay = now.getDayOfMonth();
@@ -128,21 +74,53 @@ public class Employee {
 		this.vacationPlanners.add(vacationPlanner);
 		vacationPlanner.setVacationClaimer(this);
 	}
-	
-	public List<VacationPlanner> getPlannerList() {
-		return vacationPlanners;
+
+	public Long getEmployeeId() {
+		return employeeId;
 	}
 
-	public void setPlannerList(List<VacationPlanner> plannerList) {
-		this.vacationPlanners = plannerList;
+	public void setEmployeeId(Long employeeId) {
+		this.employeeId = employeeId;
 	}
 
-	public Employee getManager() {
-		return manager;
+	public String getName() {
+		return name;
 	}
 
-	public void setManager(Employee manager) {
-		this.manager = manager;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getMonthlySalary() {
+		return monthlySalary;
+	}
+
+	public void setMonthlySalary(int monthlySalary) {
+		this.monthlySalary = monthlySalary;
+	}
+
+	public LocalDateTime getBeginningOfEmployment() {
+		return beginningOfEmployment;
+	}
+
+	public void setBeginningOfEmployment(LocalDateTime beginningOfEmployment) {
+		this.beginningOfEmployment = beginningOfEmployment;
+	}
+
+	public Position getPosition() {
+		return position;
+	}
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	public List<VacationPlanner> getVacationPlanners() {
@@ -151,6 +129,14 @@ public class Employee {
 
 	public void setVacationPlanners(List<VacationPlanner> vacationPlanners) {
 		this.vacationPlanners = vacationPlanners;
+	}
+
+	public Employee getManager() {
+		return manager;
+	}
+
+	public void setManager(Employee manager) {
+		this.manager = manager;
 	}
 
 	public String getUsername() {

@@ -52,9 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http
 			.httpBasic() // basic authentikáció
 			.and()
-			.csrf().disable()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()// REST apinál ezt alkalmazzuk leggyakrabban
+			.csrf().disable() // böngésző session
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // REST apinál ezt alkalmazzuk leggyakrabban
+			.and()
 			.authorizeRequests()
 //			.and()
 //			.authorizeHttpRequests() //védettek legyen bizonyos url ek

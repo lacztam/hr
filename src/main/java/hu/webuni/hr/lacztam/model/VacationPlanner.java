@@ -18,17 +18,13 @@ public class VacationPlanner {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
 	@ManyToOne
 	private Employee vacationClaimer;
-	
 	@ManyToOne
 	private Employee principal;
-	private Boolean state = null;
-	
+	private VacationState vacationState;
 	private LocalDateTime dateOfSubmission;
 	private LocalDateTime dateOfApprove;
-	
 	private LocalDate vacationStart;
 	private LocalDate vacationEnd;
 	
@@ -40,64 +36,70 @@ public class VacationPlanner {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Employee getVacationClaimer() {
 		return vacationClaimer;
-	}
-
-	public void setVacationClaimer(Employee vacationClaimer) {
-		this.vacationClaimer = vacationClaimer;
 	}
 
 	public Employee getPrincipal() {
 		return principal;
 	}
 
-	public void setPrincipal(Employee principal) {
-		this.principal = principal;
-	}
-
-	public Boolean getState() {
-		return state;
-	}
-
-	public void setState(Boolean state) {
-		this.state = state;
+	public VacationState getVacationState() {
+		return vacationState;
 	}
 
 	public LocalDateTime getDateOfSubmission() {
 		return dateOfSubmission;
 	}
 
-	public void setDateOfSubmission(LocalDateTime dateOfSubmission) {
-		this.dateOfSubmission = dateOfSubmission;
-	}
-
 	public LocalDateTime getDateOfApprove() {
 		return dateOfApprove;
-	}
-
-	public void setDateOfApprove(LocalDateTime dateOfApprove) {
-		this.dateOfApprove = dateOfApprove;
 	}
 
 	public LocalDate getVacationStart() {
 		return vacationStart;
 	}
 
-	public void setVacationStart(LocalDate vacationStart) {
-		this.vacationStart = vacationStart;
-	}
-
 	public LocalDate getVacationEnd() {
 		return vacationEnd;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setVacationClaimer(Employee vacationClaimer) {
+		this.vacationClaimer = vacationClaimer;
+	}
+
+	public void setPrincipal(Employee principal) {
+		this.principal = principal;
+	}
+
+	public void setVacationState(VacationState vacationState) {
+		this.vacationState = vacationState;
+	}
+
+	public void setDateOfSubmission(LocalDateTime dateOfSubmission) {
+		this.dateOfSubmission = dateOfSubmission;
+	}
+
+	public void setDateOfApprove(LocalDateTime dateOfApprove) {
+		this.dateOfApprove = dateOfApprove;
+	}
+
+	public void setVacationStart(LocalDate vacationStart) {
+		this.vacationStart = vacationStart;
 	}
 
 	public void setVacationEnd(LocalDate vacationEnd) {
 		this.vacationEnd = vacationEnd;
 	}
 
+	@Override
+	public String toString() {
+		return "VacationPlanner\n[id=" + id + ", vacationClaimer=" + vacationClaimer + ", principal=" + principal
+				+ ", vacationState=" + vacationState + ", dateOfSubmission=" + dateOfSubmission + ", dateOfApprove="
+				+ dateOfApprove + ", vacationStart=" + vacationStart + ", vacationEnd=" + vacationEnd + "]";
+	}
 }

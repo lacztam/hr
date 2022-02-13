@@ -1,5 +1,6 @@
 package hu.webuni.hr.lacztam.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,9 +16,12 @@ import hu.webuni.hr.lacztam.model.CompanyType;
 import hu.webuni.hr.lacztam.model.Employee;
 import hu.webuni.hr.lacztam.model.Position;
 import hu.webuni.hr.lacztam.model.Qualification;
+import hu.webuni.hr.lacztam.model.VacationPlanner;
+import hu.webuni.hr.lacztam.model.VacationState;
 import hu.webuni.hr.lacztam.repository.CompanyRepository;
 import hu.webuni.hr.lacztam.repository.EmployeeRepository;
 import hu.webuni.hr.lacztam.repository.PositionRepository;
+import hu.webuni.hr.lacztam.repository.VacationRepository;
 
 @Service
 public class InitDbService {
@@ -26,6 +30,7 @@ public class InitDbService {
 	@Autowired CompanyRepository companyRepository;
 	@Autowired PositionRepository positionRepository;
 	@Autowired PasswordEncoder passwordEncoder;
+	@Autowired VacationRepository vacationRepository;
 	public void clearDB() {
 		employeeRepository.deleteAll();
 		companyRepository.deleteAll();
@@ -97,6 +102,25 @@ public class InitDbService {
 		Employee e7 = new Employee(7L, "Anna", 750000, LocalDateTime.of(2016, 2, 3, 01, 01, 01) );
 		e7.setCompany(companyRepository.findByName("Harmadik Ceg"));
 		e7.setPosition(positionRepository.findByName("Tanácsadó").get(0));
-		employeeRepository.save(e7);				
+		employeeRepository.save(e7);	
+		
+		VacationPlanner vacationPlanner = new VacationPlanner();
+		vacationPlanner.setDateOfSubmission(LocalDateTime.now());
+		Employee principal = employeeRepository.findByNameStartingWithIgnoreCase("Ildikó").get(0);
+		Employee claimer = employeeRepository.findByNameStartingWithIgnoreCase("Klára").get(0);
+		vacationPlanner.setPrincipal(principal);
+		vacationPlanner.setVacationClaimer(claimer);
+		vacationPlanner.setVacationStart(LocalDate.of(2022,03,10));
+		vacationPlanner.setVacationEnd(LocalDate.of(2022, 03, 20));
+		vacationPlanner.setVacationState(VacationState.PENDING);
+		vacationRepository.save(vacationPlanner);
+		VacationPlanner vacationPlanner2 = new VacationPlanner();
+		vacationPlanner2.setVacationStart(LocalDate.of(2022,03,07));
+		vacationPlanner2.setVacationEnd(LocalDate.of(2022, 03, 25));
+		vacationPlanner2.setPrincipal(claimer);
+		vacationPlanner2.setVacationClaimer(principal);
+		vacationPlanner2.setDateOfSubmission(LocalDateTime.now());
+		vacationPlanner2.setVacationState(VacationState.CANCELLED_BY_EMPLOYEE);
+		vacationRepository.save(vacationPlanner2);
 	}
 }

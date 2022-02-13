@@ -95,12 +95,6 @@ public class EmployeeDto {
 		this.entryDate = entryDate;
 	}
 
-	@Override
-	public String toString() {
-		return "Employee [id=" + id + ", name=" + name + ", title=" + title + ", salary=" + salary + ", entryDate="
-				+ entryDate + "]";
-	}
-
 	public CompanyDto getCompany() {
 		return companyDto;
 	}

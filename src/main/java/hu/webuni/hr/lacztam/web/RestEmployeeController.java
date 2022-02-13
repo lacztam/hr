@@ -1,13 +1,17 @@
 package hu.webuni.hr.lacztam.web;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -76,6 +80,13 @@ public class RestEmployeeController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
 	
+	@GetMapping("/{employeeid}/preAuth")
+	@PreAuthorize("#employeeid == authentication.principal.employee.employeeId")
+	public EmployeeDto authenticatedUserDetailsById(@PathVariable long employeeid) {
+		EmployeeDto employeeDto = employeeMapper.employeeToDto(employeeRepository.findById(employeeid).get());
+		return employeeDto;
+	}
+	
 	@PostMapping
 	public EmployeeDto createNewEmployeeDto(@Valid @RequestBody EmployeeDto employeeDto, BindingResult result) {
 		List<Position> pos = positionRepository.findByName(employeeDto.getTitle());
@@ -137,6 +148,10 @@ public class RestEmployeeController {
 			@RequestParam(required = false) LocalDateTime entryDate,
 			@RequestParam(required = false) String company ) {
 		
+		DateTimeFormatter dateTimeFormat = DateTimeFormatter.BASIC_ISO_DATE;
+		
+		
+		
 		Specification<Employee> spec = Specification.where(null);
 		
 		if(id != null && id > 0)
@@ -151,23 +166,51 @@ public class RestEmployeeController {
 		if(salary != null && salary > 0)
 			spec = spec.and(EmployeeSpecification.hasSalary(salary));
 		
-		if(entryDate != null)
+		if(entryDate != null) {
+			System.out.println("entryDate.toString():" + entryDate.toString());
 			spec = spec.and(EmployeeSpecification.hasEntryDate(entryDate));
-		
+		}
+			
 		List<Employee> emps = employeeRepository.findAll(spec);
-		if(emps != null && emps.size() > 0)
+		if(emps != null && emps.size() > 0) {
 			System.out.println("spec:" + emps.get(0).getName());
 		
-		for(Employee e : emps) {
-			System.out.println("id:" + e.getId());
-			System.out.println("name:" + e.getName());
-			System.out.println("salary:" + e.getMonthlySalary());
-			System.out.println("entryDate:" + e.getBeginningOfEmployment());
-			System.out.println("Position:" + e.getPosition().getName());
-			if(e.getCompany() != null)
-				System.out.println("Company:" + e.getCompany().getName());
+			for(Employee e : emps) {
+				System.out.println("id:" + e.getEmployeeId());
+				System.out.println("name:" + e.getName());
+				System.out.println("salary:" + e.getMonthlySalary());
+				System.out.println("entryDate:" + e.getBeginningOfEmployment());
+				System.out.println("Position:" + e.getPosition().getName());
+				if(e.getCompany() != null)
+					System.out.println("Company:" + e.getCompany().getName());
+			}
+		}
+		return employeeMapper.employeesToDtos(employeeRepository.findAll(spec));
+	}
+	
+	@GetMapping("/spec2")
+	public List<EmployeeDto> getSpecifiedEmployee(
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate entryDate){
+		
+		Specification<Employee> spec = Specification.where(null);
+		
+		Specification<Employee> startDateLessThan = EmployeeSpecification.startDateLessThan(entryDate);
+		
+		if(spec.equals(startDateLessThan)) {
+			System.out.println("\n\n-----\n\ntrue before less than\n\n------\n\n");
+		}else {
+			System.out.println("\n\n-----\n\nfalse before less than\n\n-----\n\n");
 		}
 		
+		if(entryDate != null) {
+			spec = spec.and(startDateLessThan);
+		
+			if(spec.equals(startDateLessThan)) {
+				System.out.println("\n\n-----\n\ntrue after less than\n\n-----\n\n");
+			} else {
+				System.out.println("\n\n-----\n\nfalse after less than\n\n-----\n\n");
+			}
+		}
 		return employeeMapper.employeesToDtos(employeeRepository.findAll(spec));
 	}
 }

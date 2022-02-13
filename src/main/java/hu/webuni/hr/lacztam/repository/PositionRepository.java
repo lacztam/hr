@@ -9,6 +9,6 @@ public interface PositionRepository extends JpaRepository<Position, Integer>{
 	public List<Position> findByName(String name);
 	
 	public Position findByEmployeeName(String name);
-	public Position findByEmployeeId(int id);
+	public Position findByEmployeeEmployeeId(int id);
 
 }
