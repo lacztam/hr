@@ -19,6 +19,14 @@
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 	</properties>
 	<dependencies>
+	
+	<!-- Security -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.18.3</version>
+		</dependency>
+
 		<!-- DB -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -16,6 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import hu.webuni.hr.lacztam.security.JwtAuthFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -25,8 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	UserDetailsService userDetailsService;
 	
-//	@Autowired
-//	JwtAuthFilter jwtAuthFilter;
+	@Autowired
+	JwtAuthFilter jwtAuthFilter;
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -50,19 +53,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.httpBasic() // basic authentikáció
-			.and()
+//			.httpBasic() // basic authentikáció
+//			.and()
 			.csrf().disable() // böngésző session
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // REST apinál ezt alkalmazzuk leggyakrabban
 			.and()
 			.authorizeRequests()
+			.antMatchers("/api/login/**").permitAll()
 //			.and()
 //			.authorizeHttpRequests() //védettek legyen bizonyos url ek
 //			.antMatchers(HttpMethod.POST, "/api/companies/**").hasAuthority("admin") // POST olásra, csak admin mehet a /api/companies oldalra és aloldalakra
 //			.antMatchers(HttpMethod.PUT, "/api/companies/**").hasAnyAuthority("user", "admin")
 			.anyRequest().authenticated()
-	
 			;
+		
+		http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Bean
@@ -78,6 +83,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
-	
 	
 }

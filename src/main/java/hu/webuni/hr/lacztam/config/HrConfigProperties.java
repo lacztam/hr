@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class HrConfigProperties {
 
+//	public static class JwtTokenProperties{
+//		private int validity;
+//		private String issuer;
+//	}
+	
 	private Salary salary = new Salary();
 
 	public Salary getSalary() {
