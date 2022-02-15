@@ -97,12 +97,9 @@ public class VacationController {
 		if(vacation.getVacationState() == VacationState.APPROVED_BY_MANAGER)
 			vacation.setDateOfApprove(LocalDateTime.now());
 		
-		if(true) {
 			VacationPlanner modifyVacatoin = vacationPlannerService.modifyVacation(vacationId, vacation);
+			
 			return vacationPlannerMapper.vacationPlannerToDto(modifyVacatoin);
-		}else {
-			throw new AccessDeniedException("Vacation is in approved state, cannot delete it.");
-		}
 	}
 	
 	@GetMapping("/dtoToVacation")

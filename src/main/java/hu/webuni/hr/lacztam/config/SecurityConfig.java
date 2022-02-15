@@ -36,8 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		return new BCryptPasswordEncoder();
 	}
 	
-	//user kezelés, in memory, bryptencodert be kell állítani
-	//egyébként lehet a password()-ben sima string-ként megadni a jelszót
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider());
@@ -49,7 +47,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 
 	
-	//szabályokat
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http

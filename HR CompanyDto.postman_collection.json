@@ -1,0 +1,278 @@
+{
+	"info": {
+		"_postman_id": "4106dd78-3f2a-473a-bf71-fad8eb08fe0e",
+		"name": "HR CompanyDto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET all companies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/companies",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET getEveryCompany",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/companies/allComp",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"companies",
+						"allComp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET company by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/companies/10",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"companies",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET all companies full",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/companies?full=true",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"companies"
+					],
+					"query": [
+						{
+							"key": "full",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET all companies aboveSalary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/companies?full=true",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"companies"
+					],
+					"query": [
+						{
+							"key": "full",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST company",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"Cég 1\",\r\n        \"registrationNumber\": 1,\r\n        \"address\": \"1111, Szeged, Okos utca 12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/companies/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"companies",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST change company employee list",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"name\": \"Tamás\",\r\n        \"title\": \"Architech\",\r\n        \"monthlySalary\": 4000,\r\n        \"beginningOfEmployment\": \"2014-08-22 15:15:00\"\r\n    },\r\n    {\r\n        \"name\": \"Ági\",\r\n        \"title\": \"Boss\",\r\n        \"monthlySalary\": 5000,\r\n        \"beginningOfEmployment\": \"2010-04-30 05:30:00\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/companies/10/changeEmployeeList",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"companies",
+						"10",
+						"changeEmployeeList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST add employee to company",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ági\",\r\n    \"title\": \"ujszakma\",\r\n    \"salary\": 1100000,\r\n    \"entryDate\": \"2014-08-22T15:15:00\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/companies/10/addEmployee",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"companies",
+						"10",
+						"addEmployee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE company",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/companies/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"companies",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE employee from company",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/companies/10/deleteEmployee/18",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"companies",
+						"10",
+						"deleteEmployee",
+						"18"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT company",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"companyRegistrationNumber\": 1231,\r\n        \"name\": \"Company2\",\r\n        \"address\": \"Some Street 22\",\r\n        \"employeesList\": [\r\n            {\r\n                \r\n                \"name\": \"Kanna\",\r\n                \"title\": \"PMB\",\r\n                \"monthlySalary\": 3000,\r\n                \"beginningOfEmployment\": \"2015-07-30 12:14:00\"\r\n            },\r\n            {\r\n              \r\n                \"name\": \"Inna\",\r\n                \"title\": \"PMA\",\r\n                \"monthlySalary\": 4000,\r\n                \"beginningOfEmployment\": \"2019-10-12 10:10:00\"\r\n            }\r\n        ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/companies/10",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"companies",
+						"10"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

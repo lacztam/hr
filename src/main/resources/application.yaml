@@ -16,8 +16,7 @@ spring:
     open-in-view: false
     
 logging:  level:    '[org.springframework.security]': debug
-        
-hr: 
+    hr: 
   salary: 
     def:
       percent: 5
@@ -28,7 +27,9 @@ hr:
        5: 5
        10: 10
        7.5: 8
-  JwtTokenProperties:
-    validity: 5
+  jwtTokenProperties:
+    expireMinute: 2
     issuer: "HrApp"
-    
+    auth: "auth"
+    algorithmSpecification: "HMAC256"
+    algorithmSpecificationArgument: "mysecret"

@@ -24,8 +24,6 @@ public class EmployeeDtoValidator
 		EmployeeDto employeeDto = (EmployeeDto) target;
 		LocalDateTime now = LocalDateTime.now();
 		
-		// NotReadablePropertyException kivételeket dob, ez így a jó megoldás?
-		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeDto.getTitle()", "Error, employeeDto title value is null or empty.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeDto.getName()", "Error, employeeDto name value is null or empty.");
 		

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import hu.webuni.hr.lacztam.config.HrConfigProperties;
 import hu.webuni.hr.lacztam.model.Employee;
 
 @RestController
@@ -19,6 +20,9 @@ public class JwtLoginController {
 	
 	@Autowired
 	JwtService jwtService;
+	
+	@Autowired
+	HrConfigProperties config;
 	
 	@PostMapping("/api/login")
 	public String login(@RequestBody Employee employee) {

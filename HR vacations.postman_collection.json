@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "8039f916-2a76-4ea0-9e84-44cd6291e7f8",
+		"name": "HR vacations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "all vacation",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "pw",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/vacations/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vacations",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "spec NE MENTS RÁ!!!",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "pw",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/vacations/spec?vacationStart=2022-03-21&vacationEnd=2022-03-30",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vacations",
+						"spec"
+					],
+					"query": [
+						{
+							"key": "vacationStart",
+							"value": "2022-03-21"
+						},
+						{
+							"key": "vacationEnd",
+							"value": "2022-03-30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get static",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "pw",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/vacations/18/findWithTwoEmployeesAndState2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vacations",
+						"18",
+						"findWithTwoEmployeesAndState2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dtoToVacation",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "pw",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dateOfSubmission\": \"2022-02-12T12:38:53\",\r\n    \"vacationClaimerId\": 12,\r\n    \"principalId\": 15,\r\n    \"state\": \"PENDING\",\r\n    \"vacationStart\": \"2022-03-03\", \r\n    \"vacationEnd\": \"2022-03-15\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/vacations/dtoToVacation",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vacations",
+						"dtoToVacation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new vacation",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "pw",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"vacationClaimerId\": 12,\r\n    \"vacationStart\": \"2022-03-03\", \r\n    \"vacationEnd\": \"2022-03-15\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/vacations/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vacations",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modify",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "pw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"principalId\": 11,\r\n    \"state\": \"PENDING\",\r\n    \"vacationStart\": \"2022-04-04\", \r\n    \"vacationEnd\": \"2022-04-16\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/vacations/modifyVacation/19/withEmployee/12",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vacations",
+						"modifyVacation",
+						"19",
+						"withEmployee",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "approve vacation",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "pw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/vacations/19/approval?status=true&approverId=11",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vacations",
+						"19",
+						"approval"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "true"
+						},
+						{
+							"key": "approverId",
+							"value": "11"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete vacation by id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "pw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/vacations/deleteVacation/19/withEmployee/12",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"vacations",
+						"deleteVacation",
+						"19",
+						"withEmployee",
+						"12"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
